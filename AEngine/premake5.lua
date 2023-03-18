@@ -24,8 +24,6 @@ project "AEngine"
 	}
 
 	includedirs {
-		"src",  -- internal source files
-		"include",  -- external header files
 		"vendor/entt/include",
 		"vendor/glad/include",
 		"vendor/glfw/include",
@@ -48,8 +46,11 @@ project "AEngine"
 
 	filter "configurations:Debug"
 		runtime "Debug"
-		defines {"DEBUG", "AE_DEBUG"}
 		symbols "On"
+		defines {
+			"DEBUG",
+			"AE_DEBUG"
+		}
 
 	filter "configurations:Release"
 		runtime "Release"

@@ -4,17 +4,18 @@
 --]]
 
 -- directories
-exedir = "executable/"
-outputdir = "%{cfg.buildcfg}/"
-projdir = "%{prj.name}/"
+exeDir = "executable/"
+outputDir = "%{cfg.buildcfg}/"
+projDir = "%{prj.name}/"
+engineDir = "%{_MAIN_SCRIPT_DIR}/" .. "AEngine/"
 
 ----------------------------------------------------------------------------------------------------
 workspace "ACHO Engine Development"
 	location "build"
 	architecture "x64"
 	startproject "AEngine-Editor"
-	targetdir (exedir .. outputdir .. projdir)
-	objdir ("%{cfg.location}/" .. outputdir .. projdir)
+	targetdir (exeDir .. outputDir .. projDir)
+	objdir ("%{cfg.location}/" .. outputDir .. projDir)
 
 	configurations {
 		"Debug",
@@ -23,7 +24,7 @@ workspace "ACHO Engine Development"
 
 	group "Core"
 		include "AEngine"
-		-- include "AEngine-Editor"
+		include "AEngine-Editor"
 	group ""
 
 	group "Dependencies"

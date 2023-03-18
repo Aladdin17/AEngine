@@ -15,12 +15,17 @@ workspace "ACHO Engine Development"
 	architecture "x64"
 	startproject "AEngine-Editor"
 	targetdir (exeDir .. outputDir .. projDir)
-	objdir ("%{cfg.location}/" .. outputDir .. projDir)
+	objdir ("%{cfg.location}/obj/" .. outputDir .. projDir)
 
 	configurations {
 		"Debug",
 		"Release"
 	}
+
+	-- place non exe's into build folder
+	filter "kind:not ConsoleApp"
+		targetdir ("%{cfg.location}/lib/" .. outputDir .. projDir)
+	filter ""
 
 	group "Core"
 		include "AEngine"

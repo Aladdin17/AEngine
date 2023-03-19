@@ -8,19 +8,9 @@ project "AEngine"
 	staticruntime "Off"
 	language "C++"
 
-	defines {
-	  "GLFW_INCLUDE_NONE"
-	}
-
 	files {
 		"include/**",
 		"src/**"
-	}
-
-	links {
-		"opengl32.lib",
-		"glfw",
-		"glad"
 	}
 
 	includedirs {
@@ -30,6 +20,21 @@ project "AEngine"
 		"vendor/glm/include",
 		"vendor/spdlog/include",
 		"vendor/stb/include"
+	}
+
+	dependson {
+		"glad",
+		"glfw"
+	}
+
+	links {
+		"opengl32.lib",
+		"glfw",
+		"glad"
+	}
+
+	defines {
+	  "GLFW_INCLUDE_NONE"
 	}
 
 	filter "system:windows"

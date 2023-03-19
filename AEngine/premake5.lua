@@ -7,8 +7,6 @@ project "AEngine"
 	kind "StaticLib"
 	staticruntime "Off"
 	language "C++"
-	-- todo: remove this
-	libdirs "lib"
 
 	defines {
 	  "GLFW_INCLUDE_NONE"
@@ -20,8 +18,8 @@ project "AEngine"
 	}
 
 	links {
-		"glfw3.lib",
 		"opengl32.lib",
+		"glfw",
 		"glad"
 	}
 

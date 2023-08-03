@@ -44,13 +44,10 @@ namespace AEngine
 			/**
 			 * \brief Go to the given state
 			 * \param[in] state The state to go to
-			 * \param[in] force Whether to force the switch
 			 * \retval true The state was changed
 			 * \retval false The state was not changed
-			 * \note The \p force parameter is optional and defaults to false
-			 * \note If \p force is true, the state will be changed even if the current state does not transition to the given state
 			*/
-		bool GoToState(int nextState, bool force = false);
+		bool GoToState(int nextState);
 
 	private:
 			/**

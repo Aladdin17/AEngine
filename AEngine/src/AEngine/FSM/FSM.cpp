@@ -29,9 +29,9 @@ namespace AEngine
 		m_graph.GoToState(nextState);
 	}
 
-	bool FSM::GoToState(int nextState, bool force)
+	bool FSM::GoToState(int nextState)
 	{
-		return m_graph.GoToState(nextState, force);
+		return m_graph.GoToState(nextState);
 	}
 
 	int FSM::GetCurrentState() const

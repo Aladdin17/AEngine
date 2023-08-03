@@ -34,15 +34,16 @@ namespace AEngine
 		return m_currentState;
 	}
 
-	bool FSMGraph::GoToState(int nextState, bool force)
+	bool FSMGraph::GoToState(int nextState)
 	{
+		// don't change state if already in it
 		if (nextState == m_currentState)
 		{
 			return false;
 		}
 
-		// only check valid transition if not forcing
-		if (!force && !m_states[m_currentState].HasTransition(nextState))
+		// check if the state transition is valid
+		if (!m_states[m_currentState].HasTransition(nextState))
 		{
 			return false;
 		}

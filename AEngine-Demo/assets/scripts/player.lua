@@ -38,7 +38,7 @@ local AnimState = {
 
 local animFsm = FSM.new({
 	FSMState.new("idle",
-		{ },
+		{ AnimState.SLASH },
 
 		-- on update
 		function(dt)
@@ -259,7 +259,7 @@ function OnUpdate(dt)
 
 	if (GetMouseButton(AEMouse.LEFT)) then
 		if (animFsm:GetCurrentState() ~= AnimState.SLASH) then
-			animFsm:GoToState(AnimState.SLASH, true)
+			animFsm:GoToState(AnimState.SLASH)
 			messageAgent:SendMessageToCategory(
 				AgentCategory.ENEMY,
 				MessageType.AREA_DAMAGE,

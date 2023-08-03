@@ -94,7 +94,7 @@ end
 ----------------------------------------------------------------------------------------------------
 local fsm = FSM.new({
 	FSMState.new("seek",
-		{ State.WANDER, State.ATTACK },
+		{ State.WANDER, State.ATTACK, State.DEATH },
 
 		-- on update
 		function(dt)
@@ -131,7 +131,7 @@ local fsm = FSM.new({
 	),
 
 	FSMState.new("wander",
-		{ State.SEEK, State.TURN },
+		{ State.SEEK, State.TURN, State.DEATH },
 
 		-- on update
 		function(dt)
@@ -164,7 +164,7 @@ local fsm = FSM.new({
 	),
 
 	FSMState.new("turn",
-		{ State.LAST },
+		{ State.LAST, State.DEATH },
 
 		-- on update
 		function(dt)
@@ -192,7 +192,7 @@ local fsm = FSM.new({
 	),
 
 	FSMState.new("track",
-		{ State.WANDER, State.SEEK },
+		{ State.WANDER, State.SEEK, State.DEATH },
 
 		function(dt)
 			stateTimer = stateTimer + dt
@@ -220,7 +220,7 @@ local fsm = FSM.new({
 	),
 
 	FSMState.new("attack",
-		{ State.SEEK },
+		{ State.SEEK, State.DEATH },
 
 		-- on update
 		function(dt)
@@ -312,7 +312,7 @@ function OnStart()
 
 			-- record the position and switch to track state
 			trackPosition = msg.payload.targetPos
-			fsm:GoToState(State.TRACK, true)
+			fsm:GoToState(State.TRACK)
 		end
 	)
 
@@ -326,7 +326,7 @@ function OnStart()
 			-- if enough damage has been taken
 			if (health <= 0) then
 				-- go to state as lon
-				fsm:GoToState(State.DEATH, true)
+				fsm:GoToState(State.DEATH)
 
 				messageAgent:SendMessageToAgent(
 					msg.sender,
@@ -347,7 +347,7 @@ function OnStart()
 
 			-- go into seek state if not already in it
 			if (fsm:GetCurrentState() ~= State.ATTACK) then
-				fsm:GoToState(State.SEEK, true)
+				fsm:GoToState(State.SEEK)
 			end
 		end
 	)
@@ -364,7 +364,7 @@ function OnStart()
 		function(msg)
 			-- set position to a huge value, bit of a hack
 			targetPosition = Vec3.new(10000.0, 10000.0, 10000.0)
-			fsm:GoToState(State.WANDER, true)
+			fsm:GoToState(State.WANDER)
 		end
 	)
 end

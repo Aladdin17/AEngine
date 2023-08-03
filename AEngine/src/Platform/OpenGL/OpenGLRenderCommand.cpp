@@ -16,7 +16,8 @@ namespace
 		GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,
 		GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA,
 		GL_CONSTANT_COLOR, GL_ONE_MINUS_CONSTANT_COLOR,
-		GL_CONSTANT_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA
+		GL_CONSTANT_ALPHA, GL_ONE_MINUS_CONSTANT_ALPHA,
+		GL_INVALID_ENUM
 	};
 
 	static constexpr GLenum g_glDepthTestFunctions[] = {
@@ -28,7 +29,8 @@ namespace
 	};
 
 	static constexpr GLenum g_glPolygonDraws[] = {
-		GL_POINT, GL_FILL, GL_LINE
+		GL_POINT, GL_FILL, GL_LINE,
+		GL_INVALID_ENUM
 	};
 
 	static constexpr GLenum g_glWindingDirections[] = {
@@ -41,7 +43,7 @@ namespace
 		GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN
 	};
 
-	AEngine::Opt<AEngine::BlendFunction> GetAEBlendFunction(GLenum func)
+	inline AEngine::BlendFunction GetAEBlendFunction(GLenum func)
 	{
 		switch (func)
 		{
@@ -59,10 +61,9 @@ namespace
 		case GL_ONE_MINUS_CONSTANT_COLOR:   return AEngine::BlendFunction::OneMinusConstantColor;
 		case GL_CONSTANT_ALPHA:             return AEngine::BlendFunction::ConstantAlpha;
 		case GL_ONE_MINUS_CONSTANT_ALPHA:   return AEngine::BlendFunction::OneMinusConstantAlpha;
-		default:                            return AEngine::Nullopt;
+		default:                            return AEngine::BlendFunction::Invalid;
 		}
 	}
-
 }
 
 namespace AEngine
@@ -149,7 +150,7 @@ namespace AEngine
 		return color;
 	}
 
-	Opt<DepthTestFunction> OpenGLRenderCommand::GetDepthTestFunction()
+	DepthTestFunction OpenGLRenderCommand::GetDepthTestFunction()
 	{
 		GLenum func;
 		glGetIntegerv(GL_DEPTH_FUNC, reinterpret_cast<GLint*>(&func));
@@ -160,18 +161,19 @@ namespace AEngine
 		case GL_LESS:      return DepthTestFunction::Less;
 		case GL_GREATER:   return DepthTestFunction::Greater;
 		case GL_EQUAL:     return DepthTestFunction::Equal;
-		default:           return Nullopt;
 		}
+
+		AE_LOG_FATAL("Invalid depth test function");
 	}
 
-	Opt<BlendFunction> OpenGLRenderCommand::GetBlendSourceFunction()
+	BlendFunction OpenGLRenderCommand::GetBlendSourceFunction()
 	{
 		GLenum func;
 		glGetIntegerv(GL_BLEND_SRC, reinterpret_cast<GLint*>(&func));
 		return GetAEBlendFunction(func);
 	}
 
-	Opt<BlendFunction> OpenGLRenderCommand::GetBlendDestinationFunction()
+	BlendFunction OpenGLRenderCommand::GetBlendDestinationFunction()
 	{
 		GLenum func;
 		glGetIntegerv(GL_BLEND_DST, reinterpret_cast<GLint*>(&func));
@@ -185,7 +187,7 @@ namespace AEngine
 		return color;
 	}
 
-	Opt<PolygonFace> OpenGLRenderCommand::GetCullFace()
+	PolygonFace OpenGLRenderCommand::GetCullFace()
 	{
 		GLenum face;
 		glGetIntegerv(GL_CULL_FACE_MODE, reinterpret_cast<GLint*>(&face));
@@ -194,11 +196,13 @@ namespace AEngine
 		case GL_FRONT:            return PolygonFace::Front;
 		case GL_BACK:             return PolygonFace::Back;
 		case GL_FRONT_AND_BACK:   return PolygonFace::FrontAndBack;
-		default:                  return Nullopt;
 		}
+
+		// this should never happen as all cull face modes are valid
+		AE_LOG_FATAL("Invalid cull face");
 	}
 
-	Opt<Winding> OpenGLRenderCommand::GetFrontFace()
+	Winding OpenGLRenderCommand::GetFrontFace()
 	{
 		GLenum direction;
 		glGetIntegerv(GL_FRONT_FACE, reinterpret_cast<GLint*>(&direction));
@@ -206,14 +210,17 @@ namespace AEngine
 		{
 		case GL_CW:    return Winding::Clockwise;
 		case GL_CCW:   return Winding::CounterClockwise;
-		default:       return Nullopt;
 		}
+
+		// this should never happen as all winding directions are valid
+		AE_LOG_FATAL("Invalid winding direction");
 	}
 
-	Opt<PolygonDraw> OpenGLRenderCommand::GetPolygonMode(PolygonFace face)
+	PolygonDraw OpenGLRenderCommand::GetPolygonMode(PolygonFace face)
 	{
 		GLenum mode[2];
 		glGetIntegerv(GL_POLYGON_MODE, reinterpret_cast<GLint*>(&mode));
+
 		// only retrieve the target face
 		GLenum target = (face == PolygonFace::Front) ? mode[0] : mode[1];
 		switch (target)
@@ -221,7 +228,7 @@ namespace AEngine
 		case GL_POINT:   return PolygonDraw::Point;
 		case GL_LINE:    return PolygonDraw::Line;
 		case GL_FILL:    return PolygonDraw::Fill;
-		default:         return Nullopt;
+		default:         return PolygonDraw::Invalid;
 		}
 	}
 

@@ -22,6 +22,7 @@ namespace AEngine
 		static void Initialise(RenderLibrary graphics);
 			/**
 			 * \brief Clear the current buffer
+			 * \todo Support clearing specific buffers
 			*/
 		static void Clear();
 			/**
@@ -112,19 +113,19 @@ namespace AEngine
 			 * \return The depth test function
 			 * \retval Nullopt if an value could not be retrieved
 			*/
-		static Opt<DepthTestFunction> GetDepthTestFunction();
+		static DepthTestFunction GetDepthTestFunction();
 			/**
 			 * \brief Get the source blend function
 			 * \return The source blend function
 			 * \retval Nullopt if an value could not be retrieved
 			*/
-		static Opt<BlendFunction> GetBlendSourceFunction();
+		static BlendFunction GetBlendSourceFunction();
 			/**
 			 * \brief Get the destination blend function
 			 * \return The destination blend function
 			 * \retval Nullopt if an value could not be retrieved
 			*/
-		static Opt<BlendFunction> GetBlendDestinationFunction();
+		static BlendFunction GetBlendDestinationFunction();
 			/**
 			 * \brief Get the blend constant
 			 * \return The blend constant
@@ -135,19 +136,19 @@ namespace AEngine
 			 * \return The cull face
 			 * \retval Nullopt if an value could not be retrieved
 			*/
-		static Opt<PolygonFace> GetCullFace();
+		static PolygonFace GetCullFace();
 			/**
 			 * \brief Get the front face direction
 			 * \return The front face direction
 			 * \retval Nullopt if an value could not be retrieved
 			*/
-		static Opt<Winding> GetFrontFace();
+		static Winding GetFrontFace();
 			/**
 			 * \brief Get the polygon draw mode
 			 * \param[in] face to get the mode of.
 			 * \return The polygon draw mode
 			*/
-		static Opt<PolygonDraw> GetPolygonMode(PolygonFace face);
+		static PolygonDraw GetPolygonMode(PolygonFace face);
 			/**
 			 * \brief Get the viewport
 			 * \return The viewport

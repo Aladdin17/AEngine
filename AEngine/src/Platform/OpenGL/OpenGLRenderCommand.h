@@ -82,15 +82,15 @@ namespace AEngine
 			/**
 			 * \copydoc RenderCommandImpl::GetDepthTestFunction
 			*/
-		virtual Opt<DepthTestFunction> GetDepthTestFunction() override;
+		virtual DepthTestFunction GetDepthTestFunction() override;
 			/**
 			 * \copydoc RenderCommandImpl::GetBlendSourceFunction
 			*/
-		virtual Opt<BlendFunction> GetBlendSourceFunction() override;
+		virtual BlendFunction GetBlendSourceFunction() override;
 			/**
 			 * \copydoc RenderCommandImpl::GetBlendDestinationFunction
 			*/
-		virtual Opt<BlendFunction> GetBlendDestinationFunction() override;
+		virtual BlendFunction GetBlendDestinationFunction() override;
 			/**
 			 * \copydoc RenderCommandImpl::GetBlendConstant
 			*/
@@ -98,15 +98,15 @@ namespace AEngine
 			/**
 			 * \copydoc RenderCommandImpl::GetCullFace
 			*/
-		virtual Opt<PolygonFace> GetCullFace() override;
+		virtual PolygonFace GetCullFace() override;
 			/**
 			 * \copydoc RenderCommandImpl::GetFrontFace
 			*/
-		virtual Opt<Winding> GetFrontFace() override;
+		virtual Winding GetFrontFace() override;
 			/**
 			 * \copydoc RenderCommandImpl::GetPolygonMode
 			*/
-		virtual Opt<PolygonDraw> GetPolygonMode(PolygonFace face) override;
+		virtual PolygonDraw GetPolygonMode(PolygonFace face) override;
 			/**
 			 * \copydoc RenderCommandImpl::GetViewport
 			*/

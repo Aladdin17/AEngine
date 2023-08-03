@@ -48,8 +48,4 @@ namespace AEngine
     {
         return std::move(WeakPtr<T>(shared_ptr));
     }
-
-    template <typename T>
-    using Opt = std::optional<T>;
-    inline constexpr std::nullopt_t Nullopt{std::nullopt_t::_Tag{}};
 }

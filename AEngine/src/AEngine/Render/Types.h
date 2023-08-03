@@ -13,8 +13,8 @@ namespace AEngine
 		*/
 	enum class RenderLibrary
 	{
-		None = 0,   ///< No rendering library
-		OpenGL      ///< OpenGL rendering library
+		OpenGL,   ///< OpenGL rendering library
+		Invalid   ///< No rendering library
 	};
 
 		/**
@@ -36,7 +36,8 @@ namespace AEngine
 		ConstantColor,              ///< The source value is multiplied by a constant color
 		OneMinusConstantColor,      ///< The source value is multiplied by one minus a constant color
 		ConstantAlpha,              ///< The source value is multiplied by a constant alpha value
-		OneMinusConstantAlpha       ///< The source value is multiplied by one minus a constant alpha value
+		OneMinusConstantAlpha,      ///< The source value is multiplied by one minus a constant alpha value
+		Invalid                     ///< Invalid blend function
 	};
 
 		/**
@@ -69,9 +70,10 @@ namespace AEngine
 		*/
 	enum class PolygonDraw
 	{
-		Point,  ///< Draws the vertices as points
-		Fill,   ///< Fills the polygon
-		Line    ///< Wireframe of the polygon
+		Point,    ///< Draws the vertices as points
+		Fill,     ///< Fills the polygon
+		Line,     ///< Wireframe of the polygon
+		Invalid   ///< Invalid polygon draw mode
 	};
 
 	enum class Winding

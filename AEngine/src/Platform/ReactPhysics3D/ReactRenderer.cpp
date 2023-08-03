@@ -83,10 +83,13 @@ namespace AEngine
 	void ReactPhysicsRenderer::Render(const Math::mat4& projectionView) const
 	{
 		// capture render states
-		Opt<PolygonDraw> frontFace = RenderCommand::GetPolygonMode(PolygonFace::Front);
-		Opt<PolygonDraw> backFace = RenderCommand::GetPolygonMode(PolygonFace::Back);
-		Opt<DepthTestFunction> depthFunc = RenderCommand::GetDepthTestFunction();
-		if (!(frontFace.has_value() && backFace.has_value() && depthFunc.has_value()))
+		PolygonDraw frontFace = RenderCommand::GetPolygonMode(PolygonFace::Front);
+		PolygonDraw backFace = RenderCommand::GetPolygonMode(PolygonFace::Back);
+		DepthTestFunction depthFunc = RenderCommand::GetDepthTestFunction();
+
+		// check if any of the render states are invalid
+		// depthFunc is not checked as it can not be invalid
+		if (frontFace == PolygonDraw::Invalid || backFace == PolygonDraw::Invalid)
 		{
 			return;
 		}
@@ -109,9 +112,9 @@ namespace AEngine
 		m_shader->Unbind();
 
 		// reset render states
-		RenderCommand::PolygonMode(PolygonFace::Front, frontFace.value());
-		RenderCommand::PolygonMode(PolygonFace::Back, backFace.value());
-		RenderCommand::SetDepthTestFunction(depthFunc.value());
+		RenderCommand::PolygonMode(PolygonFace::Front, frontFace);
+		RenderCommand::PolygonMode(PolygonFace::Back, backFace);
+		RenderCommand::SetDepthTestFunction(depthFunc);
 	}
 
 	void ReactPhysicsRenderer::SetRenderItem(PhysicsRendererItem item, bool enable) const

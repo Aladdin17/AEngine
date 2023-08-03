@@ -92,17 +92,17 @@ namespace AEngine
 		return s_impl->GetClearColor();
 	}
 
-	Opt<DepthTestFunction> RenderCommand::GetDepthTestFunction()
+	DepthTestFunction RenderCommand::GetDepthTestFunction()
 	{
 		return s_impl->GetDepthTestFunction();
 	}
 
-	Opt<BlendFunction> RenderCommand::GetBlendSourceFunction()
+	BlendFunction RenderCommand::GetBlendSourceFunction()
 	{
 		return s_impl->GetBlendSourceFunction();
 	}
 
-	Opt<BlendFunction> RenderCommand::GetBlendDestinationFunction()
+	BlendFunction RenderCommand::GetBlendDestinationFunction()
 	{
 		return s_impl->GetBlendDestinationFunction();
 	}
@@ -112,17 +112,17 @@ namespace AEngine
 		return s_impl->GetBlendConstant();
 	}
 
-	Opt<PolygonFace> RenderCommand::GetCullFace()
+	PolygonFace RenderCommand::GetCullFace()
 	{
 		return s_impl->GetCullFace();
 	}
 
-	Opt<Winding> RenderCommand::GetFrontFace()
+	Winding RenderCommand::GetFrontFace()
 	{
 		return s_impl->GetFrontFace();
 	}
 
-	Opt<PolygonDraw> RenderCommand::GetPolygonMode(PolygonFace face)
+	PolygonDraw RenderCommand::GetPolygonMode(PolygonFace face)
 	{
 		return s_impl->GetPolygonMode(face);
 	}

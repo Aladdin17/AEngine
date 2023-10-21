@@ -780,32 +780,43 @@ namespace AEngine
 	inline void SceneSerialiser::DeserialiseCollider(YAML::Node& colliderNode, CollisionBody* body)
 	{
 		// check validity of colliders
-			if (!colliderNode.IsSequence())
-			{
-				AE_LOG_FATAL("Serialisation::DeserialiseCollisionBody::Failed -> Colliders must be a sequence");
-			}
-			if (colliderNode.size() != 1)
-			{
-				AE_LOG_FATAL("Serialisation::DeserialiseCollisionBody::Failed -> Only supports one collider per entity");
-			}
+		if (!colliderNode.IsSequence())
+		{
+			AE_LOG_FATAL("Serialisation::DeserialiseCollisionBody::Failed -> Colliders must be a sequence");
+		}
+		if (colliderNode.size() != 1)
+		{
+			AE_LOG_FATAL("Serialisation::DeserialiseCollisionBody::Failed -> Only supports one collider per entity");
+		}
 
-			// for each collider, add it to the collision body
-			for (int i = 0; i < colliderNode.size(); i++)
+		// for each collider, add it to the collision body
+		for (int i = 0; i < colliderNode.size(); i++)
+		{
+			YAML::Node collider = colliderNode[i];
+			std::string type = collider["type"].as<std::string>();
+			Math::quat orientation = Math::quat(Math::radians(collider["orientation"].as<Math::vec3>()));
+			Math::vec3 offset = collider["offset"].as<Math::vec3>();
+			if (type == "Box")
 			{
-				YAML::Node collider = colliderNode[i];
-				std::string type = collider["type"].as<std::string>();
-				Math::quat orientation = Math::quat(Math::radians(collider["orientation"].as<Math::vec3>()));
-				Math::vec3 offset = collider["offset"].as<Math::vec3>();
-				if (type == "Box")
-				{
-					Math::vec3 halfExtents = collider["halfExtents"].as<Math::vec3>();
-					body->AddBoxCollider(halfExtents, offset, orientation);
-				}
-				else if (type == "Sphere")
-				{
-					AE_LOG_FATAL("Serialisation::DeserialiseCollisionBody::Failed -> Sphere collider not implemented yet");
-				}
+				Math::vec3 halfExtents = collider["halfExtents"].as<Math::vec3>();
+				body->AddBoxCollider(halfExtents, offset, orientation);
 			}
+			else if (type == "Sphere")
+			{
+				float radius = collider["radius"].as<float>();
+				body->AddSphereCollider(radius, offset, orientation);
+			}
+			else if (type == "Capsule")
+			{
+				float radius = collider["radius"].as<float>();
+				float height = collider["height"].as<float>();
+				body->AddCapsuleCollider(radius, height, offset, orientation);
+			}
+			else
+			{
+				AE_LOG_FATAL("Serialisation::DeserialiseCollisionBody::Failed -> Collider type '{}' doesn't exist", type);
+			}
+		}
 	}
 
 	inline void SceneSerialiser::DeserialiseScript(YAML::Node& root, Entity& entity)

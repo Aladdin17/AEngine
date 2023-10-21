@@ -81,6 +81,15 @@ namespace AEngine
         return MakeUnique<ReactCapsuleCollider>(collider);
     }
 
+    UniquePtr<Collider> ReactCollisionBody::AddSphereCollider(float radius, const Math::vec3& offset, const Math::quat& orientation)
+    {
+        rp3d::PhysicsCommon* common = dynamic_cast<ReactPhysicsAPI&>(PhysicsAPI::Instance()).GetCommon();
+        rp3d::SphereShape* sphere = common->createSphereShape(radius);
+        rp3d::Transform transform(AEMathToRP3D(offset), AEMathToRP3D(orientation));
+        rp3d::Collider* collider = m_body->addCollider(sphere, transform);
+        return MakeUnique<ReactSphereCollider>(collider);
+    }
+
     void ReactCollisionBody::GetInterpolatedTransform(Math::vec3& position, Math::quat& orientation)
     {
         rp3d::Transform current = m_body->getTransform();
@@ -237,6 +246,11 @@ namespace AEngine
     UniquePtr<Collider> ReactRigidBody::AddCapsuleCollider(float radius, float height, const Math::vec3& offset, const Math::quat& orientation)
     {
         return m_body->AddCapsuleCollider(radius, height);
+    }
+
+    UniquePtr<Collider> ReactRigidBody::AddSphereCollider(float radius, const Math::vec3& offset, const Math::quat& orientation)
+    {
+        return m_body->AddSphereCollider(radius);
     }
 
     void ReactRigidBody::GetInterpolatedTransform(Math::vec3& position, Math::quat& orientation)

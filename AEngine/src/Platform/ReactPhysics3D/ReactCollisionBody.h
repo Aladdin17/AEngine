@@ -55,6 +55,7 @@ namespace AEngine
 			 */
 		virtual UniquePtr<Collider> AddBoxCollider(const Math::vec3& size, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
 		virtual UniquePtr<Collider> AddCapsuleCollider(float radius, float height, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
+		virtual UniquePtr<Collider> AddSphereCollider(float radius, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
 			/**
 			 * \brief Gets the interpolated transform (position and orientation) of the collision body.
 			 *
@@ -71,11 +72,11 @@ namespace AEngine
 			 */
 		rp3d::CollisionBody* GetNative() const;
 
-		protected:
-			rp3d::CollisionBody* m_body;		///< The native ReactPhysics3D CollisionBody object.
-			ReactPhysicsWorld* m_world;			///< The ReactPhysicsWorld associated with the collision body.
-			rp3d::Transform m_lastTransform;	///< The last transform of the collision body.
-		};
+	protected:
+		rp3d::CollisionBody* m_body;		///< The native ReactPhysics3D CollisionBody object.
+		ReactPhysicsWorld* m_world;			///< The ReactPhysicsWorld associated with the collision body.
+		rp3d::Transform m_lastTransform;	///< The last transform of the collision body.
+	};
 
 		/**
 		 * \class ReactRigidBody
@@ -166,6 +167,7 @@ namespace AEngine
 			 */
 		virtual UniquePtr<Collider> AddBoxCollider(const Math::vec3& size, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
 		virtual UniquePtr<Collider> AddCapsuleCollider(float radius, float height, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
+		virtual UniquePtr<Collider> AddSphereCollider(float radius, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
 			/**
 			 * \brief Gets the interpolated transform (position and orientation) of the rigid body.
 			 *

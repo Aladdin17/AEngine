@@ -21,7 +21,7 @@ namespace AEngine
 	public:
 		enum class Type
 		{
-			Box
+			Box, Capsule, Sphere
 		};
 
 	public:
@@ -65,5 +65,12 @@ namespace AEngine
 		virtual float GetRadius() const = 0;
 		virtual void SetHeight(float height) = 0;
 		virtual float GetHeight() const = 0;
+	};
+
+	class SphereCollider : public Collider
+	{
+	public:
+		virtual void SetRadius(float radius) = 0;
+		virtual float GetRadius() const = 0;
 	};
 }

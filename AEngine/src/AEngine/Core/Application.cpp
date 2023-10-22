@@ -165,6 +165,16 @@ namespace AEngine
 		AEngine::AssetManager<Texture>::Instance().Clear();
 	}
 
+	void Application::EditMode(bool editMode)
+	{
+		m_editmode = editMode;
+	}
+
+	bool Application::isEditMode() const
+	{
+		return m_editmode;
+	}
+
 	// must be called externally
 	void Application::Run()
 	{

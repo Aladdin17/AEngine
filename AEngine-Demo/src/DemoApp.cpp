@@ -99,10 +99,12 @@ public:
 			if (AEngine::Application::Instance().GetWindow()->IsShowingCursor())
 			{
 				AEngine::Application::Instance().GetWindow()->ShowCursor(false);
+				AEngine::Application::Instance().EditMode(false);
 			}
 			else
 			{
 				AEngine::Application::Instance().GetWindow()->ShowCursor(true);
+				AEngine::Application::Instance().EditMode(true);
 			}
 		}
 

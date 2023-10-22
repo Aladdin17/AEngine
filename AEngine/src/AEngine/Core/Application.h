@@ -72,6 +72,9 @@ namespace AEngine
 			*/
 		Window* GetWindow() const;
 
+		void EditMode(bool editMode);
+		bool isEditMode() const;
+
 	private:
 			/**
 			 * \brief Initialises the application specific modules.
@@ -111,6 +114,7 @@ namespace AEngine
 		bool m_running;
 		UniquePtr<Layer> m_layer;
 		Timer m_clock;
+		bool m_editmode = false;
 
 		friend int ::main(int, char**);
 

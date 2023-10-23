@@ -114,6 +114,10 @@ namespace AEngine
         {
         case rp3d::CollisionShapeName::BOX:
             return MakeUnique<ReactBoxCollider>(collider);
+        case rp3d::CollisionShapeName::CAPSULE:
+            return MakeUnique<ReactCapsuleCollider>(collider);
+        case rp3d::CollisionShapeName::SPHERE:
+            return MakeUnique<ReactSphereCollider>(collider);
         default:
             AE_LOG_FATAL("ReactCollisionBody::GetCollider::Invalid_type");
         }

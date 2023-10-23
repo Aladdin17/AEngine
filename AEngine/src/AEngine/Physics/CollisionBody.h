@@ -113,6 +113,16 @@ namespace AEngine
 			*/
 		virtual float GetLinearDamping() const = 0;
 			/**
+			 * \brief Sets the angular damping coefficient of the rigid body.
+			 * \param[in] damping The angular damping coefficient of the rigid body.
+			*/
+		virtual void SetAngularDamping(float damping) = 0;
+			/**
+			 * \brief Returns the angular damping coefficient of the rigid body.
+			 * \return The angular damping coefficient of the rigid body.
+			*/
+		virtual float GetAngularDamping() const = 0;
+			/**
 			 * \brief Sets whether the rigid body has gravity or not.
 			 * \param hasGravity Specifies if the rigid body has gravity.
 			 */

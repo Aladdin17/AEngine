@@ -621,9 +621,12 @@ namespace AEngine
 				ImGui::Separator();
 
 				// Properties
+				bool hasGravity = body->GetHasGravity();
 				float mass = body->GetMass();
 				float linearDamping = body->GetLinearDamping();
-				bool hasGravity = body->GetHasGravity();
+				float angularDamping = body->GetAngularDamping();
+				ImGui::Checkbox("Has Gravity", &hasGravity);
+				body->SetHasGravity(hasGravity);
 				ImGui::InputFloat("Mass", &mass);
 				if (mass > 0.0f)
 				{
@@ -631,15 +634,23 @@ namespace AEngine
 				}
 				ImGui::DragFloat("Linear Damping", &linearDamping, 0.01f, 0.0f, 1.0f, "%.3f");
 				body->SetLinearDamping(linearDamping);
-				ImGui::Checkbox("Has Gravity", &hasGravity);
-				body->SetHasGravity(hasGravity);
+				ImGui::DragFloat("Angular Damping", &angularDamping, 0.01f, 0.0f, 1.0f, "%.3f");
+				body->SetAngularDamping(angularDamping);
 				ImGui::Separator();
 
 				// velocities
 				Math::vec3 linearVelocity = body->GetLinearVelocity();
 				Math::vec3 angularVelocity = body->GetAngularVelocity();
 				ImGui::DragFloat3("Linear Velocity", &linearVelocity.x, 0.1f, 0.0f, 0.0f, "%.3f");
+				ImGui::SameLine();
+				ImGui::Text("(%.3f m/s)", Math::length(linearVelocity));
 				ImGui::DragFloat3("Angular Velocity", &angularVelocity.x, 0.1f, 0.0f, 0.0f, "%.3f");
+				ImGui::Text("DPS/RPM");
+				ImGui::SameLine();
+				Math::vec3 dps = Math::degrees(angularVelocity);
+				Math::vec3 rpm = dps / 6.0f;
+				ImGui::Text("x = (%.3f / %.3f), y = (%.3f / %.3f), z = (%.3f / %.3f)", dps.x, rpm.x, dps.y, rpm.y, dps.z, rpm.z);
+
 				body->SetLinearVelocity(linearVelocity);
 				body->SetAngularVelocity(angularVelocity);
 				ImGui::Separator();

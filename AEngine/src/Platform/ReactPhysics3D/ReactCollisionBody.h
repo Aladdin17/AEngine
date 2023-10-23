@@ -121,6 +121,14 @@ namespace AEngine
 			*/
 		virtual float GetLinearDamping() const override;
 			/**
+			 * \copydoc RigidBody::SetAngularDamping
+			*/
+		virtual void SetAngularDamping(float damping) override;
+			/**
+			 * \copydoc RigidBody::GetAngularDamping
+			*/
+		virtual float GetAngularDamping() const override;
+			/**
 			 * \copydoc RigidBody::SetHasGravity
 			 */
 		virtual void SetHasGravity(bool hasGravity) override;
@@ -207,6 +215,7 @@ namespace AEngine
 		// physical properties
 		float m_mass{ 0.0f };                       ///< The mass of the rigid body in kilograms.
 		float m_linearDamping{ 0.0f };              ///< The linear damping factor of the rigid body, between 0 and 1 incl.
+		float m_angularDamping{ 0.0f };             ///< The angular damping factor of the rigid body, between 0 and 1 incl.
 		bool m_hasGravity{ false };                 ///< Specifies if the rigid body has gravity.
 
 		// accelerations

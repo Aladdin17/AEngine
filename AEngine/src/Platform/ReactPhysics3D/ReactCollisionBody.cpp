@@ -173,6 +173,16 @@ namespace AEngine
 		return m_linearDamping;
 	}
 
+	void ReactRigidBody::SetAngularDamping(float damping)
+	{
+		m_angularDamping = std::clamp(damping, 0.0f, 1.0f);
+	}
+
+	float ReactRigidBody::GetAngularDamping() const
+	{
+		return m_angularDamping;
+	}
+
 	void ReactRigidBody::SetHasGravity(bool hasGravity)
 	{
 		m_hasGravity = hasGravity;

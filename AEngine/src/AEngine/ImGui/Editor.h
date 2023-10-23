@@ -30,8 +30,8 @@ namespace AEngine
 	public:
 			/**
 			* @brief Initialisation of ImGui for the Editor
-			* @param window 
-			* @param props 
+			* @param window
+			* @param props
 			*/
 		void Init(Window* window, const EditorProperties& props);
 			/**
@@ -55,6 +55,8 @@ namespace AEngine
 		Scene* m_scene;
 		Entity m_selectedEntity;
 
+		void ShowMat3(const char *label, Math::mat3& matrix);
+
 			/**
 			* @brief Method to create an ImGui Frame for the Debug Camera
 			*/
@@ -71,7 +73,7 @@ namespace AEngine
 			* @brief Method to create an ImGui Frame for the Component Inspector
 			*/
 		void ShowInspector();
-		
+
 //------------------------------------------------------------------------------
 // Methods for the Components in ECS
 //------------------------------------------------------------------------------
@@ -88,7 +90,7 @@ namespace AEngine
 			*/
 		void ShowRenderableComponent();
 			/**
-		 	* @brief Method to create an ImGui Frame for the Skinned Renderable Component 
+		 	* @brief Method to create an ImGui Frame for the Skinned Renderable Component
 		 	*/
 		void ShowSkinnedRenderableComponent();
 			/**

@@ -3,6 +3,10 @@ assets:
     path: assets/shaders/simple.shader
   - type: shader
     path: assets/shaders/skybox.shader
+  - type: model
+    path: assets/models/box.gltf
+  - type: model
+    path: assets/models/sphere.gltf
 
 entities:
   - TagComponent:
@@ -17,3 +21,22 @@ entities:
           - assets/textures/skybox/bottom.jpg
           - assets/textures/skybox/front.jpg
           - assets/textures/skybox/back.jpg
+  - TagComponent:
+      tag: Box1
+    TransformComponent:
+      translation: [ 0.0, 0.0, -30.0 ]
+      orientation: [ 0.0, 0.0, 0.0 ]
+      scale: [ 20.0, 30.0, 3.0 ]
+    RenderableComponent:
+      active: true
+      model: box.gltf
+      shader: simple.shader
+    RigidBodyComponent:
+      type: dynamic
+      massKg: 2.0
+      hasGravity: false
+      colliders:
+        - type: Box
+          orientation: [ 0.0, 0.0, 0.0 ]
+          offset: [ 0.0, 0.0, 0.0 ]
+          halfExtents: [ 10.0, 15.0, 1.5 ]

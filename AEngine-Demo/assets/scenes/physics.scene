@@ -4,9 +4,9 @@ assets:
   - type: shader
     path: assets/shaders/skybox.shader
   - type: model
-    path: assets/models/box.gltf
+    path: assets/models/Box/box.gltf
   - type: model
-    path: assets/models/sphere.gltf
+    path: assets/models/Sphere/sphere.gltf
 
 entities:
   - TagComponent:

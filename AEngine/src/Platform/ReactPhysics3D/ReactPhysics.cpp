@@ -100,10 +100,25 @@ namespace AEngine
 			// run the update step on each of the rigidbodies in the world
 			// this will update their positions and rotations
 			// as well as any other physics calculations
-			for (auto body : m_rigidBodies)
+			for (auto it = m_rigidBodies.begin(); it != m_rigidBodies.end();)
 			{
-				// body->OnUpdate(m_updateStep);
+				SharedPtr<ReactRigidBody> rb = it->lock();
+				if (!rb)
+				{
+					it = m_rigidBodies.erase(it);
+					if (it == m_rigidBodies.end())
+					{
+						break;
+					}
+
+					// dont ++it here otherwise we will skip the element after the erased one
+					continue;
+				}
+
+				UpdateRigidBody(m_updateStep, rb.get());
+				++it;
 			}
+
 
 			// update the rp3d physics world to detect collisions
 			// inside here the collision callbacks will be called
@@ -124,14 +139,14 @@ namespace AEngine
 
 	SharedPtr<CollisionBody> ReactPhysicsWorld::AddCollisionBody(const Math::vec3& position, const Math::quat& orientation)
 	{
-		SharedPtr<CollisionBody> body = MakeShared<ReactCollisionBody>(this, position, orientation);
+		SharedPtr<ReactCollisionBody> body = MakeShared<ReactCollisionBody>(this, position, orientation);
 		m_collisionBodies.push_back(MakeWeak(body));
 		return body;
 	}
 
 	SharedPtr<RigidBody> ReactPhysicsWorld::AddRigidBody(const Math::vec3& position, const Math::quat& orientation)
 	{
-		SharedPtr<RigidBody> body = MakeShared<ReactRigidBody>(this, position, orientation);
+		SharedPtr<ReactRigidBody> body = MakeShared<ReactRigidBody>(this, position, orientation);
 		m_rigidBodies.push_back(MakeWeak(body));
 		return body;
 	}

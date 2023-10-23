@@ -201,20 +201,20 @@ namespace AEngine
 		virtual void GetInterpolatedTransform(Math::vec3& position, Math::quat& orientation) override;
 
 	private:
-		UniquePtr<ReactCollisionBody> m_body;   ///< The ReactCollisionBody associated with the rigid body.
-		RigidBody::Type m_type;                 ///< The type of the rigid body.
+		UniquePtr<ReactCollisionBody> m_body;       ///< The ReactCollisionBody associated with the rigid body.
+		RigidBody::Type m_type;                     ///< The type of the rigid body.
 
 		// physical properties
-		float m_mass;                           ///< The mass of the rigid body in kilograms.
-		float m_linearDamping;                  ///< The linear damping factor of the rigid body, between 0 and 1 incl.
-		bool m_hasGravity;                      ///< Specifies if the rigid body has gravity.
+		float m_mass{ 0.0f };                       ///< The mass of the rigid body in kilograms.
+		float m_linearDamping{ 0.0f };              ///< The linear damping factor of the rigid body, between 0 and 1 incl.
+		bool m_hasGravity{ false };                 ///< Specifies if the rigid body has gravity.
 
 		// accelerations
-		Math::vec3 m_linearAcceleration;        ///< The linear acceleration of the body in m/s^2.
-		Math::vec3 m_angularAcceleration;       ///< The angular acceleration of the body in radians/s^2.
+		Math::vec3 m_linearAcceleration{ 0.0f };    ///< The linear acceleration of the body in m/s^2.
+		Math::vec3 m_angularAcceleration{ 0.0f };   ///< The angular acceleration of the body in radians/s^2.
 
 		// velocities
-		Math::vec3 m_linearVelocity;            ///< The velocity of the rigid body world space m/s.
-		Math::vec3 m_angularVelocity;           ///< The angular velocity of the rigid body in radians/s.
+		Math::vec3 m_linearVelocity{ 0.0f };        ///< The velocity of the rigid body world space m/s.
+		Math::vec3 m_angularVelocity{ 0.0f };       ///< The angular velocity of the rigid body in radians/s.
 	};
 }

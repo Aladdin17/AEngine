@@ -601,21 +601,47 @@ namespace AEngine
 			if (!rc->ptr)
 			{
 				PhysicsWorld* world = m_scene->GetPhysicsWorld();
-				rc->ptr= world->AddRigidBody(tc->translation, tc->orientation);
+				rc->ptr = world->AddRigidBody(tc->translation, tc->orientation);
 			}
 
 			if(ImGui::CollapsingHeader("RigidgBody Component"))
 			{
+				RigidBody* body = rc->ptr.get();
+
 				// Set type
 				ImGui::Text("Type");
 				ImGui::Spacing();
-				int rbType = static_cast<int>(rc->ptr->GetType());
+				int rbType = static_cast<int>(body->GetType());
 				ImGui::RadioButton("Dynamic", &rbType, static_cast<int>(RigidBody::Type::Dynamic));
 				ImGui::SameLine();
 				ImGui::RadioButton("Static", &rbType, static_cast<int>(RigidBody::Type::Static));
 				ImGui::SameLine();
 				ImGui::RadioButton("Kinematic", &rbType, static_cast<int>(RigidBody::Type::Kinematic));
-				rc->ptr->SetType(static_cast<RigidBody::Type>(rbType));
+				body->SetType(static_cast<RigidBody::Type>(rbType));
+				ImGui::Separator();
+
+				// Properties
+				float mass = body->GetMass();
+				float linearDamping = body->GetLinearDamping();
+				bool hasGravity = body->GetHasGravity();
+				ImGui::InputFloat("Mass", &mass);
+				if (mass > 0.0f)
+				{
+					body->SetMass(mass);
+				}
+				ImGui::DragFloat("Linear Damping", &linearDamping, 0.01f, 0.0f, 1.0f, "%.3f");
+				body->SetLinearDamping(linearDamping);
+				ImGui::Checkbox("Has Gravity", &hasGravity);
+				body->SetHasGravity(hasGravity);
+				ImGui::Separator();
+
+				// velocities
+				Math::vec3 linearVelocity = body->GetLinearVelocity();
+				Math::vec3 angularVelocity = body->GetAngularVelocity();
+				ImGui::DragFloat3("Linear Velocity", &linearVelocity.x, 0.1f, 0.0f, 0.0f, "%.3f");
+				ImGui::DragFloat3("Angular Velocity", &angularVelocity.x, 0.1f, 0.0f, 0.0f, "%.3f");
+				body->SetLinearVelocity(linearVelocity);
+				body->SetAngularVelocity(angularVelocity);
 				ImGui::Separator();
 
 				// Add collider popup
@@ -623,7 +649,7 @@ namespace AEngine
 				{
 					if (ImGui::MenuItem("Box Collider"))
 					{
-						rc->ptr->AddBoxCollider(Math::vec3(1.0f, 1.0f, 1.0f), Math::vec3(0.0f, 0.0f, 0.0f), tc->orientation);
+						body->AddBoxCollider(Math::vec3(1.0f, 1.0f, 1.0f), Math::vec3(0.0f, 0.0f, 0.0f), tc->orientation);
 						ImGui::CloseCurrentPopup();
 					}
 					ImGui::EndPopup();
@@ -636,8 +662,7 @@ namespace AEngine
 				}
 
 				// list the colliders
-				RigidBody* rb = rc->ptr.get();
-				UniquePtr<Collider> collider = rb->GetCollider();
+				UniquePtr<Collider> collider = body->GetCollider();
 				if (collider)
 				{
 					bool isTrigger = collider->GetIsTrigger();

@@ -72,9 +72,9 @@ namespace AEngine
 		rp3d::CollisionBody* GetNative() const;
 
 	protected:
-		rp3d::CollisionBody* m_body;		///< The native ReactPhysics3D CollisionBody object.
-		ReactPhysicsWorld* m_world;			///< The ReactPhysicsWorld associated with the collision body.
-		rp3d::Transform m_lastTransform;	///< The last transform of the collision body.
+		rp3d::CollisionBody* m_body;       ///< The native ReactPhysics3D CollisionBody object.
+		ReactPhysicsWorld* m_world;        ///< The ReactPhysicsWorld associated with the collision body.
+		rp3d::Transform m_lastTransform;   ///< The last transform of the collision body.
 	};
 
 		/**
@@ -113,6 +113,23 @@ namespace AEngine
 			 */
 		virtual float GetMass() const override;
 			/**
+			 * \copydoc RigidBody::SetInertiaTensor
+			 */
+		virtual void SetInertiaTensor(const Math::mat3& inertiaTensor) override;
+			/**
+			 * \copydoc RigidBody::GetInertiaTensor
+			 */
+		virtual Math::mat3 GetInertiaTensor() const override;
+
+			/**
+			 * \copydoc RigidBody::SetHasGravity
+			 */
+		virtual void SetHasGravity(bool hasGravity) override;
+			/**
+			 * \copydoc RigidBody::GetHasGravity
+			 */
+		virtual bool GetHasGravity() const override;
+			/**
 			 * \copydoc RigidBody::SetLinearDamping
 			*/
 		virtual void SetLinearDamping(float damping) override;
@@ -128,31 +145,7 @@ namespace AEngine
 			 * \copydoc RigidBody::GetAngularDamping
 			*/
 		virtual float GetAngularDamping() const override;
-			/**
-			 * \copydoc RigidBody::SetHasGravity
-			 */
-		virtual void SetHasGravity(bool hasGravity) override;
-			/**
-			 * \copydoc RigidBody::GetHasGravity
-			 */
-		virtual bool GetHasGravity() const override;
 
-			/**
-			 * \copydoc RigidBody::SetLinearAcceleration
-			*/
-		virtual void SetLinearAcceleration(Math::vec3 acceleration) override;
-			/**
-			 * \copydoc RigidBody::GetLinearAcceleration
-			*/
-		virtual Math::vec3 GetLinearAcceleration() const override;
-			/**
-			 * \copydoc RigidBody::SetAngularAcceleration
-			*/
-		virtual void SetAngularAcceleration(Math::vec3 acceleration) override;
-			/**
-			 * \copydoc RigidBody::GetAngularAcceleration
-			*/
-		virtual Math::vec3 GetAngularAcceleration() const override;
 			/**
 			 * \copydoc RigidBody::SetLinearVelocity
 			 */
@@ -217,10 +210,11 @@ namespace AEngine
 		float m_linearDamping{ 0.0f };              ///< The linear damping factor of the rigid body, between 0 and 1 incl.
 		float m_angularDamping{ 0.0f };             ///< The angular damping factor of the rigid body, between 0 and 1 incl.
 		bool m_hasGravity{ false };                 ///< Specifies if the rigid body has gravity.
+		Math::mat3 m_inertiaTensor;                 ///< The inertia tensor of the rigid body.
 
-		// accelerations
-		Math::vec3 m_linearAcceleration{ 0.0f };    ///< The linear acceleration of the body in m/s^2.
-		Math::vec3 m_angularAcceleration{ 0.0f };   ///< The angular acceleration of the body in radians/s^2.
+		// helpers
+		Math::mat3 m_inverseInertiaTensor{ 0.0f };          ///< The inverse inertia tensor of the rigid body.
+		float m_inverseMass{ 0.0f };                        ///< The inverse inertia tensor of the rigid body in world space.
 
 		// velocities
 		Math::vec3 m_linearVelocity{ 0.0f };        ///< The velocity of the rigid body world space m/s.

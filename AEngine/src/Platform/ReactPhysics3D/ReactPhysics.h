@@ -19,6 +19,10 @@ namespace AEngine
 	class ReactCollisionBody;
 	class ReactRigidBody;
 
+
+//--------------------------------------------------------------------------------
+// Math Conversions
+//--------------------------------------------------------------------------------
 		/**
 		 * \brief Converts a Math::vec3 to ReactPhysics3D Vector3.
 		 *
@@ -47,6 +51,21 @@ namespace AEngine
 		 * \return The equivalent Math::quat.
 		 */
 	Math::quat RP3DToAEMath(const rp3d::Quaternion quat);
+
+
+//--------------------------------------------------------------------------------
+// ReactEventListener
+//--------------------------------------------------------------------------------
+		/**
+		 * \class ReactEventListener
+		 * \brief Represents an event listener for ReactPhysics.
+		*/
+	class ReactEventListener : public rp3d::EventListener
+	{
+	private:
+		virtual void onContact(const CollisionCallback::CallbackData& callbackData) override;
+	};
+
 
 		/**
 		 * \class ReactPhysicsAPI
@@ -102,6 +121,7 @@ namespace AEngine
 			 */
 		ReactPhysicsWorld(rp3d::PhysicsCommon* common);
 		virtual ~ReactPhysicsWorld() override;
+
 			/**
 			 * \brief Initializes the world with the given settings.
 			 *
@@ -111,13 +131,13 @@ namespace AEngine
 			/**
 			 * \brief Sets the update step for the world.
 			 * \param[in] step The fixed update step.
-			*/
+			 */
 		virtual void SetUpdateStep(TimeStep step) override;
-		/**
-		 * \brief Called every frame to update the world.
-		 *
-		 * \param[in] deltaTime The time step for the update.
-		 */
+			/**
+			 * \brief Called every frame to update the world.
+			 *
+			 * \param[in] deltaTime The time step for the update.
+			 */
 		virtual void OnUpdate(TimeStep deltaTime) override;
 			/**
 			 * \brief Adds a collision body to the world.
@@ -176,17 +196,16 @@ namespace AEngine
 			 *
 			 * \return The update step value.
 			 */
-		float GetUpdateStep() const { return m_updateStep; }
+		float GetUpdateStep() const { return m_props.updateStep; }
+
 		virtual void ForceRenderingRefresh() override;
 
 	private:
-		rp3d::PhysicsWorld* m_world;                             ///< The native PhysicsWorld object.
-		UniquePtr<ReactPhysicsRenderer> m_renderer;              ///< The ReactPhysicsRenderer.
-		TimeStep m_accumulator;                                  ///< The value of the accumulator.
-		TimeStep m_updateStep;                                   ///< The update step value.
+		rp3d::PhysicsWorld* m_world;                                  ///< The native PhysicsWorld object.
+		UniquePtr<ReactPhysicsRenderer> m_renderer;                   ///< The ReactPhysicsRenderer.
+		TimeStep m_accumulator;                                       ///< The value of the accumulator.
+		ReactEventListener m_eventListener;                           ///< The event listener for the world.
 
-		std::vector<WeakPtr<CollisionBody>> m_collisionBodies;   ///< The collision bodies in the world
-		std::vector<WeakPtr<RigidBody>> m_rigidBodies;           ///< The rigid bodies in the world, used to run the update step.
 		std::vector<WeakPtr<ReactCollisionBody>> m_collisionBodies;   ///< The collision bodies in the world
 		std::vector<WeakPtr<ReactRigidBody>> m_rigidBodies;           ///< The rigid bodies in the world, used to run the update step.
 	};

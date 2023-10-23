@@ -17,8 +17,8 @@ namespace AEngine
 	ReactCollisionBody::ReactCollisionBody(
 		ReactPhysicsWorld* world,
 		const Math::vec3& position,
-		const Math::quat& orientation):
-		m_world(world)
+		const Math::quat& orientation)
+		: m_world(world)
 	{
 		m_body = world->GetNative()->createCollisionBody({ AEMathToRP3D(position), AEMathToRP3D(orientation) });
 		m_lastTransform = m_body->getTransform();
@@ -155,12 +155,41 @@ namespace AEngine
 
 	void ReactRigidBody::SetMass(float massKg)
 	{
+		if (massKg <= 0.0f)
+		{
+			AE_LOG_ERROR("ReactRigidBody::SetMass::Mass_must_be_greater_than_zero");
+			return;
+		}
+
 		m_mass = massKg;
+		m_inverseMass = 1.0f / massKg;
 	}
 
 	float ReactRigidBody::GetMass() const
 	{
 		return m_mass;
+	}
+
+	void ReactRigidBody::SetInertiaTensor(const Math::mat3& inertiaTensor)
+	{
+		/// \todo Find a way to detect invalid inverse inertia tensors
+		m_inertiaTensor = inertiaTensor;
+		m_inverseInertiaTensor = Math::inverse(inertiaTensor);
+	}
+
+	Math::mat3 ReactRigidBody::GetInertiaTensor() const
+	{
+		return m_inertiaTensor;
+	}
+
+	void ReactRigidBody::SetHasGravity(bool hasGravity)
+	{
+		m_hasGravity = hasGravity;
+	}
+
+	bool ReactRigidBody::GetHasGravity() const
+	{
+		return m_hasGravity;
 	}
 
 	void ReactRigidBody::SetLinearDamping(float damping)
@@ -181,36 +210,6 @@ namespace AEngine
 	float ReactRigidBody::GetAngularDamping() const
 	{
 		return m_angularDamping;
-	}
-
-	void ReactRigidBody::SetHasGravity(bool hasGravity)
-	{
-		m_hasGravity = hasGravity;
-	}
-
-	bool ReactRigidBody::GetHasGravity() const
-	{
-		return m_hasGravity;
-	}
-
-	void ReactRigidBody::SetLinearAcceleration(Math::vec3 acceleration)
-	{
-		m_linearAcceleration = acceleration;
-	}
-
-	Math::vec3 ReactRigidBody::GetLinearAcceleration() const
-	{
-		return m_linearAcceleration;
-	}
-
-	void ReactRigidBody::SetAngularAcceleration(Math::vec3 acceleration)
-	{
-		m_angularAcceleration = acceleration;
-	}
-
-	Math::vec3 ReactRigidBody::GetAngularAcceleration() const
-	{
-		return m_angularAcceleration;
 	}
 
 	void ReactRigidBody::SetLinearVelocity(const Math::vec3& velocity)

@@ -98,6 +98,27 @@ namespace AEngine
 			 */
 		virtual float GetMass() const = 0;
 			/**
+			 * \brief Sets the inertia tensor for the rigid body.
+			 * \param[in] inertiaTensor The inertia tensor for the rigid body.
+			*/
+		virtual void SetInertiaTensor(const Math::mat3& inertiaTensor) = 0;
+			/**
+			 * \brief Returns the inertia tensor of the rigid body.
+			*/
+		virtual Math::mat3 GetInertiaTensor() const = 0;
+			/**
+			 * \brief Sets whether the rigid body has gravity or not.
+			 * \param hasGravity Specifies if the rigid body has gravity.
+			 */
+		virtual void SetHasGravity(bool hasGravity) = 0;
+			/**
+			 * \brief Returns whether the rigid body has gravity or not.
+			 *
+			 * \return True if the rigid body has gravity, false otherwise.
+			 */
+		virtual bool GetHasGravity() const = 0;
+
+			/**
 			 * \brief Sets the linear damping coefficient of the rigid body.
 			 * \param[in] damping The linear damping coefficient of the rigid body.
 			 * \note
@@ -122,38 +143,8 @@ namespace AEngine
 			 * \return The angular damping coefficient of the rigid body.
 			*/
 		virtual float GetAngularDamping() const = 0;
-			/**
-			 * \brief Sets whether the rigid body has gravity or not.
-			 * \param hasGravity Specifies if the rigid body has gravity.
-			 */
-		virtual void SetHasGravity(bool hasGravity) = 0;
-			/**
-			 * \brief Returns whether the rigid body has gravity or not.
-			 *
-			 * \return True if the rigid body has gravity, false otherwise.
-			 */
-		virtual bool GetHasGravity() const = 0;
 
-			/**
-			 * \brief Sets the linear acceleration of the body.
-			 * \param acceleration The new linear acceleration of the body in m/s^2.
-			*/
-		virtual void SetLinearAcceleration(Math::vec3 acceleration) = 0;
-			/**
-			 * \brief Returns the linear acceleration of the body.
-			 * \return The linear acceleration of the body in m/s^2.
-			*/
-		virtual Math::vec3 GetLinearAcceleration() const = 0;
-			/**
-			 * \brief Sets the angular acceleration of the body.
-			 * \param acceleration The new angular acceleration of the body in radians/s^2.
-			*/
-		virtual void SetAngularAcceleration(Math::vec3 acceleration) = 0;
-			/**
-			 * \brief Returns the angular acceleration of the body.
-			 * \return The angular acceleration of the body in radians/s^2.
-			*/
-		virtual Math::vec3 GetAngularAcceleration() const = 0;
+
 			/**
 			 * \brief Sets the velocity of the rigid body.
 			 * \param velocity The new velocity of the rigid body.

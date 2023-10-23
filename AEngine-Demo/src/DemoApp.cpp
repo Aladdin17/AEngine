@@ -18,33 +18,35 @@ public:
 
 	void OnAttach() override
 	{
+		using namespace AEngine;
+
 		// load scenes
-		AEngine::Scene *level1 = AEngine::SceneManager::LoadFromFile("assets/scenes/level1.scene");
-		if (!level1)
+		Scene *physicsScene = SceneManager::LoadFromFile("assets/scenes/physics.scene");
+		if (!physicsScene)
 		{
 			exit(1);
 		}
 
 		// set active scene and debug camera
-		AEngine::SceneManager::SetActiveScene("level1");
-		AEngine::Scene::UseDebugCamera(true);
-		AEngine::DebugCamera& debugCam = AEngine::Scene::GetDebugCamera();
+		SceneManager::SetActiveScene("physics");
+		Scene::UseDebugCamera(true);
+		DebugCamera& debugCam = Scene::GetDebugCamera();
 		debugCam.SetFarPlane(10000.0f);
 		debugCam.SetMovementSpeed(20.0f);
 		debugCam.SetNearPlane(0.1f);
 		debugCam.SetFov(45.0f);
 		debugCam.SetYaw(-90.0f);
 
-		// set default camera
-		AEngine::CameraComponent* camComp = AEngine::SceneManager::GetActiveScene()->GetEntity("Player").GetComponent<AEngine::CameraComponent>();
-		AEngine::SceneManager::GetActiveScene()->SetActiveCamera(&camComp->camera);
-
 		// setup physics debug renderer
-		const AEngine::PhysicsRenderer* debugRenderer = AEngine::SceneManager::GetActiveScene()->GetPhysicsRenderer();
-		debugRenderer->SetRenderItem(AEngine::PhysicsRendererItem::CollisionShape, true);
-		debugRenderer->SetRenderItem(AEngine::PhysicsRendererItem::ContactPoint, true);
-		debugRenderer->SetRenderShape(AEngine::CollisionRenderShape::Capsule, true);
-		debugRenderer->SetRenderShape(AEngine::CollisionRenderShape::Box, true);
+		const PhysicsRenderer* debugRenderer = physicsScene->GetPhysicsRenderer();
+		debugRenderer->SetRenderItem(PhysicsRendererItem::CollisionShape, true);
+		debugRenderer->SetRenderItem(PhysicsRendererItem::ContactPoint, true);
+		debugRenderer->SetRenderShape(CollisionRenderShape::Capsule, true);
+		debugRenderer->SetRenderShape(CollisionRenderShape::Box, true);
+
+		// set scene to simulation mode and turn on physics rendering
+		physicsScene->SetState(Scene::State::Simulate);
+		physicsScene->SetPhysicsRenderingEnabled(true);
 	}
 
 	void OnDetach() override
@@ -54,21 +56,6 @@ public:
 
 	void OnUpdate(AEngine::TimeStep ts) override
 	{
-		if (AEngine::Input::IsKeyPressedNoRepeat(AEKey::F1))
-		{
-			AEngine::RenderCommand::PolygonMode(AEngine::PolygonFace::FrontAndBack, AEngine::PolygonDraw::Fill);
-		}
-
-		if (AEngine::Input::IsKeyPressedNoRepeat(AEKey::F2))
-		{
-			AEngine::RenderCommand::PolygonMode(AEngine::PolygonFace::FrontAndBack, AEngine::PolygonDraw::Line);
-		}
-
-		if (AEngine::Input::IsKeyPressedNoRepeat(AEKey::F3))
-		{
-			AEngine::RenderCommand::PolygonMode(AEngine::PolygonFace::FrontAndBack, AEngine::PolygonDraw::Point);
-		}
-
 		if (AEngine::Input::IsKeyPressedNoRepeat(AEKey::F4))
 		{
 			if (AEngine::SceneManager::GetActiveScene()->IsPhysicsRenderingEnabled())
@@ -93,8 +80,7 @@ public:
 			}
 		}
 
-
-		if (AEngine::Input::IsKeyPressedNoRepeat(AEKey::P))
+		if (AEngine::Input::IsKeyPressedNoRepeat(AEKey::ESCAPE))
 		{
 			if (AEngine::Application::Instance().GetWindow()->IsShowingCursor())
 			{
@@ -118,7 +104,7 @@ public:
 	DemoApp(AEngine::Application::Properties props)
 		: Application{ props }
 	{
-		SetLayer(std::make_unique<DemoLayer>("Test Layer"));
+		SetLayer(std::make_unique<DemoLayer>("Physics Demo"));
 		this->GetWindow()->ShowCursor(false);
 
 		// setup render settings
@@ -132,6 +118,6 @@ public:
 
 AEngine::Application* AEngine::CreateApplication(AEngine::Application::Properties& props)
 {
-	props.title = "Scavenger Hunt";
+	props.title = "Christien's Physics Demo";
 	return new DemoApp(props);
 }

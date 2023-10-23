@@ -52,19 +52,44 @@ namespace AEngine
 
 		// Handle events from the window and pass to game layer if needed
 		window->RegisterEventHandler<KeyPressed>(0, [&io, this](KeyPressed& e) -> bool {
+			if (Application::Instance().isEditMode())
+			{
+				return false;
+			}
+
 			return ImGui::GetIO().WantCaptureKeyboard || ImGui::GetIO().WantCaptureMouse;
 		});
 		window->RegisterEventHandler<KeyReleased>(0, [this](KeyReleased& e) -> bool {
+			if (Application::Instance().isEditMode())
+			{
+				return false;
+			}
+
 			return ImGui::GetIO().WantCaptureKeyboard || ImGui::GetIO().WantCaptureMouse;
 		});
 
 		window->RegisterEventHandler<MouseButtonPressed>(0, [this](MouseButtonPressed& e) -> bool {
+			if (Application::Instance().isEditMode())
+			{
+				return false;
+			}
+
 			return ImGui::GetIO().WantCaptureMouse;
 		});
 		window->RegisterEventHandler<MouseButtonReleased>(0, [this](MouseButtonReleased& e) -> bool {
+			if (Application::Instance().isEditMode())
+			{
+				return false;
+			}
+
 			return ImGui::GetIO().WantCaptureMouse;
 		});
 		window->RegisterEventHandler<MouseMoved>(0, [this](MouseMoved& e) -> bool {
+			if (Application::Instance().isEditMode())
+			{
+				return false;
+			}
+
 			return ImGui::GetIO().WantCaptureMouse;
 		});
 	}
@@ -315,7 +340,7 @@ namespace AEngine
 			{
 				ShowAddComponentPrompt<CollisionBodyComponent>("Collision Body");
 			}
-			
+
 			if (!m_selectedEntity.HasComponent<CollisionBodyComponent>())
 			{
 				ShowAddComponentPrompt<RigidBodyComponent>("Rigid Body");

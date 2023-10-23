@@ -149,7 +149,7 @@ namespace AEngine
         m_body = MakeUnique<ReactCollisionBody>(world, position, orientation, true);
     }
 
-    rp3d::RigidBody* ReactRigidBody::GetNative() const
+	rp3d::RigidBody* ReactRigidBody::GetNative() const
     {
         return dynamic_cast<rp3d::RigidBody*>(m_body->GetNative());
     }

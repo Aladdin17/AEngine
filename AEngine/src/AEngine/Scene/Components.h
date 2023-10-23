@@ -136,16 +136,12 @@ namespace AEngine
 
 	struct CollisionBodyComponent
 	{
-		SharedPtr<CollisionBody> ptr = nullptr;
+		SharedPtr<CollisionBody> ptr;
 	};
 
 	struct RigidBodyComponent
 	{
-		float massKg;
-		bool hasGravity;
-		RigidBody::Type type;
-
-		SharedPtr<RigidBody> ptr = nullptr;
+		SharedPtr<RigidBody> ptr;
 	};
 
 	struct BoxColliderComponent

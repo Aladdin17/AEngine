@@ -12,6 +12,7 @@
 #include "AEngine/Physics/Physics.h"
 #include "ReactRenderer.h"
 #include <reactphysics3d/reactphysics3d.h>
+#include <vector>
 
 	namespace AEngine
 	{
@@ -176,9 +177,12 @@
 		virtual void ForceRenderingRefresh() override;
 
 	private:
-		rp3d::PhysicsWorld* m_world; ///< The native PhysicsWorld object.
-		UniquePtr<ReactPhysicsRenderer> m_renderer; ///< The ReactPhysicsRenderer.
-		TimeStep m_accumulator; ///< The value of the accumulator.
-		TimeStep m_updateStep; ///< The update step value.
+		rp3d::PhysicsWorld* m_world;                             ///< The native PhysicsWorld object.
+		UniquePtr<ReactPhysicsRenderer> m_renderer;              ///< The ReactPhysicsRenderer.
+		TimeStep m_accumulator;                                  ///< The value of the accumulator.
+		TimeStep m_updateStep;                                   ///< The update step value.
+
+		std::vector<WeakPtr<CollisionBody>> m_collisionBodies;   ///< The collision bodies in the world
+		std::vector<WeakPtr<RigidBody>> m_rigidBodies;           ///< The rigid bodies in the world, used to run the update step.
 	};
 }

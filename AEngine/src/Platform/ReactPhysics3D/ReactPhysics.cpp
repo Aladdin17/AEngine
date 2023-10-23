@@ -94,9 +94,27 @@ namespace AEngine
 
 		while (m_accumulator >= m_updateStep)
 		{
-			m_world->update(m_updateStep.Seconds());
+			// remove the update step from the accumulator
 			m_accumulator -= m_updateStep;
 
+			// run the update step on each of the rigidbodies in the world
+			// this will update their positions and rotations
+			// as well as any other physics calculations
+			for (auto body : m_rigidBodies)
+			{
+				// body->OnUpdate(m_updateStep);
+			}
+
+			// update the rp3d physics world to detect collisions
+			// inside here the collision callbacks will be called
+			// and the properties of the rigidbodies will be updated
+			// to reflect the collisions; however, the positions and
+			// rotations will not be updated, only the immediate collision
+			// resolution will be performed and the positions and rotations
+			// will be updated in the next step
+			m_world->update(m_updateStep.Seconds());
+
+			// update the render data if debug rendering is enabled
 			if (m_world->getIsDebugRenderingEnabled())
 			{
 				m_renderer->GenerateRenderData();
@@ -106,12 +124,16 @@ namespace AEngine
 
 	SharedPtr<CollisionBody> ReactPhysicsWorld::AddCollisionBody(const Math::vec3& position, const Math::quat& orientation)
 	{
-		return MakeShared<ReactCollisionBody>(this, position, orientation);
+		SharedPtr<CollisionBody> body = MakeShared<ReactCollisionBody>(this, position, orientation);
+		m_collisionBodies.push_back(MakeWeak(body));
+		return body;
 	}
 
 	SharedPtr<RigidBody> ReactPhysicsWorld::AddRigidBody(const Math::vec3& position, const Math::quat& orientation)
 	{
-		return MakeShared<ReactRigidBody>(this, position, orientation);
+		SharedPtr<RigidBody> body = MakeShared<ReactRigidBody>(this, position, orientation);
+		m_rigidBodies.push_back(MakeWeak(body));
+		return body;
 	}
 
 	void ReactPhysicsWorld::Render(const Math::mat4& projectionView) const

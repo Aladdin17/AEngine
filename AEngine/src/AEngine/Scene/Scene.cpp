@@ -169,10 +169,17 @@ namespace AEngine
 		// }
 	}
 
-	void Scene::OnUpdate(TimeStep dt)
+	void Scene::OnUpdate(TimeStep dt, bool step)
 	{
-		// if not simulating, set a fixed timestep of 0.0f
-		TimeStep adjustedDt = (m_state == State::Simulate) ? (dt * m_timeScale) : 0.0f;
+		TimeStep adjustedDt = 0.0f;
+		if (step)
+		{
+			adjustedDt = m_fixedTimeStep;
+		}
+		else if (m_state == State::Simulate)
+		{
+			adjustedDt = dt * m_timeScale;
+		}
 
 		// update simulation
 		MessageService::DispatchMessages();
@@ -265,6 +272,11 @@ namespace AEngine
 	int Scene::GetPhysicsUpdateRate() const
 	{
 		return (int) (1.0f / m_fixedTimeStep);
+	}
+
+	void Scene::AdvanceOneSimulationStep()
+	{
+		OnUpdate(m_fixedTimeStep, true);
 	}
 
 	void Scene::SetActiveCamera(PerspectiveCamera* camera)

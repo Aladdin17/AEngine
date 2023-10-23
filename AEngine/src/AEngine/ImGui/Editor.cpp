@@ -205,6 +205,16 @@ namespace AEngine
 		ImGui::SliderFloat("Time Scale", &timeScale, 0.0f, 2.0f, "%.3f");
 		m_scene->SetPhysicsUpdateRate(physicsUpdateRate);
 		m_scene->SetTimeScale(timeScale);
+		ImGui::Separator();
+
+		// step the simulation
+		if (m_scene->GetState() == Scene::State::Pause)
+		{
+			if (ImGui::Button("Advance One Simulation Step"))
+			{
+				m_scene->AdvanceOneSimulationStep();
+			}
+		}
 
 		ImGui::End();
 	}

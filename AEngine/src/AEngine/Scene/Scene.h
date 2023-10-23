@@ -77,7 +77,7 @@ namespace AEngine
 			 * \details
 			 * This should be called each frame just before the window is refreshed.
 			**/
-		void OnUpdate(TimeStep dt);
+		void OnUpdate(TimeStep dt, bool step = false);
 
 			/**
 			 * \brief Updates scene cameras to reflect the new aspect ratio
@@ -99,9 +99,15 @@ namespace AEngine
 		int GetPhysicsUpdateRate() const;
 
 			/**
-			 * \brief Sets the active camera for the scene
-			 * \param[in] camera to set as active
-			**/
+			 * \brief Advances the simulation by one timestep
+			 * \note This is used for debugging purposes
+			*/
+		void AdvanceOneSimulationStep();
+
+		/**
+		 * \brief Sets the active camera for the scene
+		 * \param[in] camera to set as active
+		 **/
 		void SetActiveCamera(PerspectiveCamera* camera);
 
 //--------------------------------------------------------------------------------

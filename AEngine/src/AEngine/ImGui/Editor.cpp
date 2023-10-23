@@ -211,7 +211,7 @@ namespace AEngine
 		// physics simulation rates
 		int physicsUpdateRate = m_scene->GetPhysicsUpdateRate();
 		float timeScale = m_scene->GetTimeScale();
-		ImGui::SliderInt("Physics Update Rate", &physicsUpdateRate, 1, 1200);
+		ImGui::SliderInt("Physics Update Rate", &physicsUpdateRate, 1, 6000);
 		ImGui::SliderFloat("Time Scale", &timeScale, 0.0f, 2.0f, "%.3f");
 		m_scene->SetPhysicsUpdateRate(physicsUpdateRate);
 		m_scene->SetTimeScale(timeScale);

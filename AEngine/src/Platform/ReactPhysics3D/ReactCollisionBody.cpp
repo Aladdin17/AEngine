@@ -141,6 +141,7 @@ namespace AEngine
 	ReactRigidBody::ReactRigidBody(ReactPhysicsWorld* world, const Math::vec3& position, const Math::quat& orientation)
 	{
 		m_body = MakeUnique<ReactCollisionBody>(world, position, orientation);
+		m_body->GetNative()->setUserData(static_cast<void*>(this));
 	}
 
 	void ReactRigidBody::SetType(Type type)

@@ -194,4 +194,9 @@ namespace AEngine
 	{
 		return m_world;
 	}
+
+	void ReactPhysicsWorld::UpdateRigidBody(TimeStep deltaTime, ReactRigidBody* body)
+	{
+		// to be implemented
+	}
 }

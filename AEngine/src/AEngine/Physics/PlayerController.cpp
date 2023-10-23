@@ -28,7 +28,7 @@ namespace AEngine
 		m_groundRayLength{ m_properties.height }
 	{
 		m_body = world->AddRigidBody(startPosition, Math::quat(1, 0, 0, 0));
-		m_body->SetType(RigidBody::Type::KINEMATIC);
+		m_body->SetType(RigidBody::Type::Kinematic);
 		m_body->AddCapsuleCollider(m_properties.radius, m_properties.height);
 		m_groundRay = Raycaster::Create(world);
 		m_forwardRay = Raycaster::Create(world);
@@ -78,7 +78,7 @@ namespace AEngine
 		m_currentDirection.y += m_fallingSpeed;
 
 		// applies movement on the body based on the current direction
-		m_body->SetVelocity(m_currentDirection);
+		m_body->SetLinearVelocity(m_currentDirection);
 	}
 
 	void PlayerController::OnUpdate(float dt)
@@ -89,7 +89,7 @@ namespace AEngine
 			// if hit, set the state and stop moving in the horizontal directions
 			if (!m_hitWall)
 			{
-				m_body->SetVelocity({0.0f, m_fallingSpeed, 0.0f});
+				m_body->SetLinearVelocity({0.0f, m_fallingSpeed, 0.0f});
 				m_hitWall = true;
 			}
 		}
@@ -108,8 +108,8 @@ namespace AEngine
 			if (!m_inGroundedState)
 			{
 				// if hit, set the state and stop falling
-				m_body->SetDrag(m_properties.moveDrag);
-				m_body->SetVelocity({ m_currentDirection.x, 0, m_currentDirection.z });
+				m_body->SetLinearDamping(m_properties.moveDrag);
+				m_body->SetLinearVelocity({ m_currentDirection.x, 0, m_currentDirection.z });
 				m_fallingSpeed = 0.0f;
 				m_inGroundedState = true;
 				m_inFallingState = false;
@@ -134,14 +134,14 @@ namespace AEngine
 			// if not hit, set the state and start falling
 			if (!m_inFallingState)
 			{
-				m_body->SetDrag(m_properties.fallDrag);
+				m_body->SetLinearDamping(m_properties.fallDrag);
 				m_inFallingState = true;
 				m_inGroundedState = false;
 			}
 
 			// set the y component of velocity to the falling speed
 			m_currentDirection.y = m_fallingSpeed;
-			m_body->SetVelocity(m_currentDirection);
+			m_body->SetLinearVelocity(m_currentDirection);
 
 			// apply falling acceleration
 			m_fallingSpeed += -9.8f * dt;

@@ -354,15 +354,15 @@ namespace AEngine
 				RigidBody::Type type = rb->GetType();
 				std::string strType;
 
-				if (type == RigidBody::Type::DYNAMIC)
+				if (type == RigidBody::Type::Dynamic)
 				{
 					strType = "dynamic";
 				}
-				else if (type == RigidBody::Type::KINEMATIC)
+				else if (type == RigidBody::Type::Kinematic)
 				{
 					strType = "kinematic";
 				}
-				else if (type == RigidBody::Type::STATIC)
+				else if (type == RigidBody::Type::Static)
 				{
 					strType =  "static";
 				}
@@ -721,15 +721,15 @@ namespace AEngine
 
 			if (strType == "dynamic")
 			{
-				type = RigidBody::Type::DYNAMIC;
+				type = RigidBody::Type::Dynamic;
 			}
 			else if (strType == "kinematic")
 			{
-				type = RigidBody::Type::KINEMATIC;
+				type = RigidBody::Type::Kinematic;
 			}
 			else if (strType == "static")
 			{
-				type = RigidBody::Type::STATIC;
+				type = RigidBody::Type::Static;
 			}
 			else
 			{

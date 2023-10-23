@@ -610,11 +610,11 @@ namespace AEngine
 				ImGui::Text("Type");
 				ImGui::Spacing();
 				int rbType = static_cast<int>(rc->ptr->GetType());
-				ImGui::RadioButton("Dynamic", &rbType, static_cast<int>(RigidBody::Type::DYNAMIC));
+				ImGui::RadioButton("Dynamic", &rbType, static_cast<int>(RigidBody::Type::Dynamic));
 				ImGui::SameLine();
-				ImGui::RadioButton("Static", &rbType, static_cast<int>(RigidBody::Type::STATIC));
+				ImGui::RadioButton("Static", &rbType, static_cast<int>(RigidBody::Type::Static));
 				ImGui::SameLine();
-				ImGui::RadioButton("Kinematic", &rbType, static_cast<int>(RigidBody::Type::KINEMATIC));
+				ImGui::RadioButton("Kinematic", &rbType, static_cast<int>(RigidBody::Type::Kinematic));
 				rc->ptr->SetType(static_cast<RigidBody::Type>(rbType));
 				ImGui::Separator();
 

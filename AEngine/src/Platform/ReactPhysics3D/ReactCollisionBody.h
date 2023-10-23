@@ -24,50 +24,49 @@ namespace AEngine
 	public:
 			/**
 			 * \brief Constructs a ReactCollisionBody object with the given parameters.
-			 *
 			 * \param[in] world The ReactPhysicsWorld associated with the collision body.
 			 * \param[in] position The initial position of the collision body.
 			 * \param[in] orientation The initial orientation of the collision body.
-			 * \param[in] isRigid Specifies if the collision body is rigid (default: false).
 			 */
-		ReactCollisionBody(ReactPhysicsWorld* world, const Math::vec3& position, const Math::quat& orientation, bool isRigid = false);
-
+		ReactCollisionBody(ReactPhysicsWorld* world, const Math::vec3& position, const Math::quat& orientation);
 		virtual ~ReactCollisionBody();
+
 			/**
-			 * \brief Sets the transform (position and orientation) of the collision body.
-			 *
-			 * \param[in] position The new position of the collision body.
-			 * \param[in] orientation The new orientation of the collision body.
+			 * \copydoc CollisionBody::SetTransform
 			 */
 		virtual void SetTransform(const Math::vec3&, const Math::quat&) override;
 			/**
-			 * \brief Gets the transform (position and orientation) of the collision body.
-			 *
-			 * \param[out] position The position of the collision body.
-			 * \param[out] orientation The orientation of the collision body.
+			 * \copydoc CollisionBody::GetTransform
 			 */
 		virtual void GetTransform(Math::vec3&, Math::quat&) const override;
 			/**
-			 * \brief Adds a box collider to the collision body.
-			 *
-			 * \param[in] size The size of the box collider.
-			 * \return A pointer to the created Collider object.
+			 * \copydoc CollisionBody::AddBoxCollider
 			 */
 		virtual UniquePtr<Collider> AddBoxCollider(const Math::vec3& size, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
+			/**
+			 * \copydoc CollisionBody::AddCapsuleCollider
+			*/
 		virtual UniquePtr<Collider> AddCapsuleCollider(float radius, float height, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
+			/**
+			 * \copydoc CollisionBody::AddSphereCollider
+			*/
 		virtual UniquePtr<Collider> AddSphereCollider(float radius, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
 			/**
-			 * \brief Gets the interpolated transform (position and orientation) of the collision body.
-			 *
-			 * \param[out] position The interpolated position of the collision body.
-			 * \param[out] orientation The interpolated orientation of the collision body.
+			 * \copydoc CollisionBody::GetCollider
+			*/
+		virtual UniquePtr<Collider> GetCollider() override;
+			/**
+			 * \copydoc CollisionBody::RemoveCollider
+			*/
+		virtual void RemoveCollider() override;
+
+			/**
+			 * \copydoc CollisionBody::GetCollider
 			 */
 		virtual void GetInterpolatedTransform(Math::vec3& position, Math::quat& orientation) override;
-		virtual UniquePtr<Collider> GetCollider() override;
-		virtual void RemoveCollider() override;
+
 			/**
 			 * \brief Returns the native collision body object.
-			 *
 			 * \return A pointer to the native ReactPhysics3D CollisionBody object.
 			 */
 		rp3d::CollisionBody* GetNative() const;
@@ -89,109 +88,133 @@ namespace AEngine
 	public:
 			/**
 			 * \brief Constructs a ReactRigidBody object with the given parameters.
-			 *
 			 * \param world The ReactPhysicsWorld associated with the rigid body.
 			 * \param position The initial position of the rigid body.
 			 * \param orientation The initial orientation of the rigid body.
 			 */
 		ReactRigidBody(ReactPhysicsWorld* world, const Math::vec3& position, const Math::quat& orientation);
-			/**
-			 * \brief Default destructor.
-			 */
 		virtual ~ReactRigidBody() = default;
+
 			/**
-			 * \brief Sets whether the rigid body has gravity or not.
-			 *
-			 * \param hasGravity Specifies if the rigid body has gravity.
+			 * \copydoc RigidBody::SetType
 			 */
-		virtual void SetHasGravity(bool hasGravity) override;
+		virtual void SetType(Type type) override;
 			/**
-			 * \brief Returns whether the rigid body has gravity or not.
-			 *
-			 * \return True if the rigid body has gravity, false otherwise.
-			 */
-		virtual bool GetHasGravity() const override;
+			 * \copydoc RigidBody::GetType
+			*/
+		virtual Type GetType() const override;
+
 			/**
-			 * \brief Sets the velocity of the rigid body.
-			 *
-			 * \param velocity The new velocity of the rigid body.
-			 */
-		virtual void SetVelocity(const Math::vec3& velocity) override;
-			/**
-			 * \brief Returns the velocity of the rigid body.
-			 *
-			 * \return The velocity of the rigid body.
-			 */
-		virtual const Math::vec3 GetVelocity() const override;
-			/**
-			 * \brief Sets the drag factor of the rigid body.
-			 *
-			 * \param factor The drag factor of the rigid body.
-			 */
-		virtual void SetDrag(float factor) override;
-			/**
-			 * \brief Sets the mass of the rigid body.
-			 *
-			 * \param massKg The mass of the rigid body in kilograms.
+			 * \copydoc RigidBody::SetMass
 			 */
 		virtual void SetMass(float massKg) override;
 			/**
-			 * \brief Returns the mass of the rigid body.
-			 *
-			 * \return The mass of the rigid body in kilograms.
+			 * \copydoc RigidBody::GetMass
 			 */
 		virtual float GetMass() const override;
+			/**
+			 * \copydoc RigidBody::SetLinearDamping
+			*/
+		virtual void SetLinearDamping(float damping) override;
+			/**
+			 * \copydoc RigidBody::GetLinearDamping
+			*/
+		virtual float GetLinearDamping() const override;
+			/**
+			 * \copydoc RigidBody::SetHasGravity
+			 */
+		virtual void SetHasGravity(bool hasGravity) override;
+			/**
+			 * \copydoc RigidBody::GetHasGravity
+			 */
+		virtual bool GetHasGravity() const override;
+
+			/**
+			 * \copydoc RigidBody::SetLinearAcceleration
+			*/
+		virtual void SetLinearAcceleration(Math::vec3 acceleration) override;
+			/**
+			 * \copydoc RigidBody::GetLinearAcceleration
+			*/
+		virtual Math::vec3 GetLinearAcceleration() const override;
+			/**
+			 * \copydoc RigidBody::SetAngularAcceleration
+			*/
+		virtual void SetAngularAcceleration(Math::vec3 acceleration) override;
+			/**
+			 * \copydoc RigidBody::GetAngularAcceleration
+			*/
+		virtual Math::vec3 GetAngularAcceleration() const override;
+			/**
+			 * \copydoc RigidBody::SetLinearVelocity
+			 */
+		virtual void SetLinearVelocity(const Math::vec3& velocity) override;
+			/**
+			 * \copydoc RigidBody::GetLinearVelocity
+			 */
+		virtual const Math::vec3 GetLinearVelocity() const override;
+			/**
+			 * \copydoc RigidBody::SetAngularVelocity
+			*/
+		virtual void SetAngularVelocity(const Math::vec3& velocity) override;
+			/**
+			 * \copydoc RigidBody::GetAngularVelocity
+			*/
+		virtual const Math::vec3 GetAngularVelocity() const override;
+
 
 		//--------------------------------------------------------------------------------
 		// From CollisionBody
 		//--------------------------------------------------------------------------------
 			/**
-			 * \brief Sets the transform (position and orientation) of the rigid body.
-			 *
-			 * \param[in] position The new position of the rigid body.
-			 * \param[in] orientation The new orientation of the rigid body.
+			 * \copydoc ReactCollisionBody::SetTransform
 			 */
 		virtual void SetTransform(const Math::vec3& position, const Math::quat& orientation) override;
 			/**
-			 * \brief Gets the transform (position and orientation) of the rigid body.
-			 *
-			 * \param[out] position The position of the rigid body.
-			 * \param[out] orientation The orientation of the rigid body.
+			 * \copydoc ReactCollisionBody::GetTransform
 			 */
 		virtual void GetTransform(Math::vec3& position, Math::quat& orientation) const override;
 			/**
-			 * \brief Adds a box collider to the rigid body.
-			 *
-			 * \param[in] size The size of the box collider.
-			 * \return A pointer to the created Collider object.
+			 * \copydoc ReactCollisionBody::AddBoxCollider
 			 */
 		virtual UniquePtr<Collider> AddBoxCollider(const Math::vec3& size, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
+			/**
+			 * \copydoc ReactCollisionBody::AddCapsuleCollider
+			*/
 		virtual UniquePtr<Collider> AddCapsuleCollider(float radius, float height, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
+			/**
+			 * \copydoc ReactCollisionBody::AddSphereCollider
+			*/
 		virtual UniquePtr<Collider> AddSphereCollider(float radius, const Math::vec3& offset = Math::vec3{0.0f}, const Math::quat& orientation = Math::quat{Math::vec3{ 0.0f, 0.0f, 0.0f }}) override;
 			/**
-			 * \brief Gets the interpolated transform (position and orientation) of the rigid body.
-			 *
-			 * \param[out] position The interpolated position of the rigid body.
-			 * \param[out] orientation The interpolated orientation of the rigid body.
+			 * \copydoc ReactCollisionBody::GetCollider
+			*/
+		virtual UniquePtr<Collider> GetCollider() override;
+			/**
+			 * \copydoc ReactCollisionBody::RemoveCollider
+			*/
+		virtual void RemoveCollider() override;
+
+			/**
+			 * \copydoc ReactCollisionBody::GetCollider
 			 */
 		virtual void GetInterpolatedTransform(Math::vec3& position, Math::quat& orientation) override;
-			/**
-			 * \brief Sets the type of the rigid body.
-			 *
-			 * \param[in] type The type of the rigid body.
-			 */
-		virtual void SetType(Type type) override;
-		virtual Type GetType() const override;
-		virtual UniquePtr<Collider> GetCollider() override;
-		virtual void RemoveCollider() override;
-			/**
-			 * \brief Returns the native rigid body object.
-			 *
-			 * \return A pointer to the native ReactPhysics3D RigidBody object.
-			 */
-		rp3d::RigidBody* GetNative() const;
 
 	private:
-		UniquePtr<ReactCollisionBody> m_body; ///< The ReactCollisionBody associated with the rigid body.
+		UniquePtr<ReactCollisionBody> m_body;   ///< The ReactCollisionBody associated with the rigid body.
+		RigidBody::Type m_type;                 ///< The type of the rigid body.
+
+		// physical properties
+		float m_mass;                           ///< The mass of the rigid body in kilograms.
+		float m_linearDamping;                  ///< The linear damping factor of the rigid body, between 0 and 1 incl.
+		bool m_hasGravity;                      ///< Specifies if the rigid body has gravity.
+
+		// accelerations
+		Math::vec3 m_linearAcceleration;        ///< The linear acceleration of the body in m/s^2.
+		Math::vec3 m_angularAcceleration;       ///< The angular acceleration of the body in radians/s^2.
+
+		// velocities
+		Math::vec3 m_linearVelocity;            ///< The velocity of the rigid body world space m/s.
+		Math::vec3 m_angularVelocity;           ///< The angular velocity of the rigid body in radians/s.
 	};
 }

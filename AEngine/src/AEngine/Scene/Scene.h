@@ -92,6 +92,12 @@ namespace AEngine
 		void SetState(State state);
 		State GetState() const;
 
+		void SetTimeScale(float scale);
+		float GetTimeScale() const;
+
+		void SetPhysicsUpdateRate(int hertz);
+		int GetPhysicsUpdateRate() const;
+
 			/**
 			 * \brief Sets the active camera for the scene
 			 * \param[in] camera to set as active
@@ -157,6 +163,7 @@ namespace AEngine
 		std::string m_ident;
 		State m_state{ State::Edit };
 		TimeStep m_fixedTimeStep;
+		float m_timeScale{ 1.0f };
 		PerspectiveCamera* m_activeCamera;
 		entt::registry m_Registry;
 		UniquePtr<PhysicsWorld> m_physicsWorld;

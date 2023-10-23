@@ -197,6 +197,15 @@ namespace AEngine
 		ImGui::RadioButton("Pause", &sceneState, static_cast<int>(Scene::State::Pause));
 		m_scene->SetState(static_cast<Scene::State>(sceneState));
 		ImGui::Separator();
+
+		// physics simulation rates
+		int physicsUpdateRate = m_scene->GetPhysicsUpdateRate();
+		float timeScale = m_scene->GetTimeScale();
+		ImGui::SliderInt("Physics Update Rate", &physicsUpdateRate, 1, 1200);
+		ImGui::SliderFloat("Time Scale", &timeScale, 0.0f, 2.0f, "%.3f");
+		m_scene->SetPhysicsUpdateRate(physicsUpdateRate);
+		m_scene->SetTimeScale(timeScale);
+
 		ImGui::End();
 	}
 

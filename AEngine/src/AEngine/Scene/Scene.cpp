@@ -172,7 +172,7 @@ namespace AEngine
 	void Scene::OnUpdate(TimeStep dt)
 	{
 		// if not simulating, set a fixed timestep of 0.0f
-		TimeStep adjustedDt = (m_state == State::Simulate) ? dt : 0.0f;
+		TimeStep adjustedDt = (m_state == State::Simulate) ? (dt * m_timeScale) : 0.0f;
 
 		// update simulation
 		MessageService::DispatchMessages();
@@ -241,6 +241,30 @@ namespace AEngine
 	Scene::State Scene::GetState() const
 	{
 		return m_state;
+	}
+
+	void Scene::SetTimeScale(float scale)
+	{
+		if (scale >= 0.0f)
+		{
+			m_timeScale = scale;
+		}
+	}
+
+	float Scene::GetTimeScale() const
+	{
+		return m_timeScale;
+	}
+
+	void Scene::SetPhysicsUpdateRate(int hertz)
+	{
+		m_fixedTimeStep = 1.0f / hertz;
+		m_physicsWorld->SetUpdateStep(m_fixedTimeStep);
+	}
+
+	int Scene::GetPhysicsUpdateRate() const
+	{
+		return (int) (1.0f / m_fixedTimeStep);
 	}
 
 	void Scene::SetActiveCamera(PerspectiveCamera* camera)

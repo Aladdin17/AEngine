@@ -7,6 +7,7 @@
 #include "AEngine/Core/Types.h"
 #include "ReactPhysics.h"
 #include "ReactCollisionBody.h"
+#include "AEngine/Core/Logger.h"
 
 namespace AEngine
 {
@@ -39,7 +40,41 @@ namespace AEngine
 //--------------------------------------------------------------------------------
 	void ReactEventListener::onContact(const CollisionCallback::CallbackData& callbackData)
 	{
-		// implement collision resolution
+		for (unsigned int p = 0; p < callbackData.getNbContactPairs(); p++)
+		{
+			CollisionCallback::ContactPair contactPair = callbackData.getContactPair(p);
+
+			if(contactPair.getEventType() == CollisionCallback::ContactPair::EventType::ContactExit)
+			{
+				return;
+			}
+
+			ReactRigidBody* body1 = static_cast<ReactRigidBody*>(contactPair.getBody1()->getUserData());
+			ReactRigidBody* body2 = static_cast<ReactRigidBody*>(contactPair.getBody2()->getUserData());
+			
+			//check if either body is nullptr
+			// check if either body is static implement later
+			//if (body1->IsStatic() || body2->IsStatic()) something like that
+
+			for(unsigned int c = 0; c < contactPair.getNbContactPoints(); c++)
+			{
+				CollisionCallback::ContactPoint contactPoint = contactPair.getContactPoint(c);
+				float penetration = contactPoint.getPenetrationDepth();
+				Math::vec3 normal = RP3DToAEMath(contactPoint.getWorldNormal());
+
+				rp3d::Vector3 body1Contact = contactPair.getCollider1()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider1();
+				rp3d::Vector3 body2Contact = contactPair.getCollider2()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider2();
+
+				Math::vec3 body1ContactPoint = RP3DToAEMath(body1Contact);
+				Math::vec3 body2ContactPoint = RP3DToAEMath(body2Contact);
+
+				AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body1ContactPoint.x, body1ContactPoint.y, body1ContactPoint.z);
+				AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body2ContactPoint.x, body2ContactPoint.y, body2ContactPoint.z);
+
+				ResolvePenetration(body1, body2, penetration, normal);
+				CollisionResolution(body1, body2, body1ContactPoint, body2ContactPoint, normal);
+			}
+		}
 	}
 
 
@@ -198,5 +233,100 @@ namespace AEngine
 	void ReactPhysicsWorld::UpdateRigidBody(TimeStep deltaTime, ReactRigidBody* body)
 	{
 		// to be implemented
+		
+		//add linear velocity
+		Math::vec3 position;
+		Math::quat orientation;
+
+		body->GetTransform(position, orientation);
+		Math::vec3 newPos = position + body->GetLinearVelocity() * deltaTime.Seconds();
+
+		//add angular velocity
+		Math::quat newOrientation = orientation * Math::quat(body->GetAngularVelocity() * deltaTime.Seconds());
+
+		body->SetTransform(newPos, newOrientation);
+	}
+
+
+//--------------------------------------------------------------------------------
+//Physics Resolution
+//--------------------------------------------------------------------------------
+
+	void ReactEventListener::ResolvePenetration(ReactRigidBody* body1, ReactRigidBody* body2, float penetration, const Math::vec3& normal)
+	{
+		// to be implemented
+		//change logic based on type of body
+		if(body1->GetType() != RigidBody::Type::Static)
+		{
+			Math::vec3 pos1;
+			Math::quat orient1;
+			body1->GetTransform(pos1, orient1);
+			Math::vec3 newPos1 = pos1 - penetration * normal;
+			body1->SetTransform(newPos1, orient1);
+		}
+
+		if(body2->GetType() != RigidBody::Type::Static)
+		{
+			Math::vec3 pos2;
+			Math::quat orient2;
+			body2->GetTransform(pos2, orient2);
+			Math::vec3 newPos2 = pos2 + penetration * normal;
+			body2->SetTransform(newPos2, orient2);
+		}
+		
+	}
+
+	void ReactEventListener::CollisionResolution(ReactRigidBody* body1, ReactRigidBody* body2, const Math::vec3& body1ContactPoint, const Math::vec3& body2ContactPoint, 
+												const Math::vec3& normal)
+	{
+		float coefficeintOfRestitution = 0.8f;
+
+		Math::vec3 body1Linear = body1->GetLinearVelocity();
+		Math::vec3 body1Angular = body1->GetAngularVelocity();
+
+		Math::vec3 body2Linear = body2->GetLinearVelocity();
+		Math::vec3 body2Angular = body2->GetAngularVelocity();
+
+		Math::vec3 relativeVelocity = body1Linear - body2Linear;
+
+		Math::vec3 r1 = body1ContactPoint - body1->ConvertCOMToWorldSpace();
+		Math::vec3 r2 = body2ContactPoint - body2->ConvertCOMToWorldSpace();
+
+		float restitution = -(1.0f + coefficeintOfRestitution);
+		float combinedInverseMass = body1->GetInverseMass() + body2->GetInverseMass();
+
+		Math::vec3 r1CrossN = Math::cross(r1, normal);
+		Math::vec3 r2CrossN = Math::cross(r2, normal);
+
+		float numerator = restitution * (Math::dot(relativeVelocity, normal) + Math::dot(body1->GetAngularVelocity(), r1CrossN) 
+							- Math::dot(body2->GetAngularVelocity(), r2CrossN));
+
+		float denominator = combinedInverseMass + (Math::dot(r1CrossN, body1->GetInverseInertiaTensor() * r1CrossN) 
+							+ Math::dot(r2CrossN, body2->GetInverseInertiaTensor() * r2CrossN));
+
+		float lambda = numerator / denominator;
+
+		Math::vec3 impulse = lambda * normal;
+
+		if(lambda < 0)
+		{
+			body1Linear += impulse * body1->GetInverseMass();
+			body1Angular += (lambda * body1->GetInverseInertiaTensor()) * r1CrossN;
+
+			body2Linear -= impulse * body2->GetInverseMass();
+			body2Angular -= (lambda * body2->GetInverseInertiaTensor()) * r2CrossN;
+
+			if(body1->GetType() != RigidBody::Type::Static)
+			{
+				body1->SetLinearVelocity(body1Linear);
+				body1->SetAngularVelocity(body1Angular);
+			}
+			
+			if(body2->GetType() != RigidBody::Type::Static)
+			{
+				body2->SetLinearVelocity(body2Linear);
+				body2->SetAngularVelocity(body2Angular);
+			} 
+		}
 	}
 }

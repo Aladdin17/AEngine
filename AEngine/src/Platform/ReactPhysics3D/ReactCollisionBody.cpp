@@ -233,6 +233,15 @@ namespace AEngine
 		return m_angularVelocity;
 	}
 
+	void ReactRigidBody::SetCenterOfMass(const Math::vec3 &centerOfMass)
+	{
+		m_centerOfMass = centerOfMass;
+	}
+
+	Math::vec3 ReactRigidBody::GetCenterOfMass() const
+	{
+		return m_centerOfMass;
+	}
 
 //--------------------------------------------------------------------------------
 // From ReactCollisionBody
@@ -249,6 +258,9 @@ namespace AEngine
 
 	UniquePtr<Collider> ReactRigidBody::AddBoxCollider(const Math::vec3& size, const Math::vec3& offset, const Math::quat& orientation)
 	{
+		Math::mat3 inertiaTensor = RectangleInertiaTensor(m_mass, size);
+		this->SetInertiaTensor(inertiaTensor);
+
 		return m_body->AddBoxCollider(size, offset, orientation);
 	}
 
@@ -259,6 +271,9 @@ namespace AEngine
 
 	UniquePtr<Collider> ReactRigidBody::AddSphereCollider(float radius, const Math::vec3& offset, const Math::quat& orientation)
 	{
+		Math::mat3 inertiaTensor = SphereInertiaTensor(m_mass, radius);
+		this->SetInertiaTensor(inertiaTensor);
+
 		return m_body->AddSphereCollider(radius);
 	}
 
@@ -276,4 +291,56 @@ namespace AEngine
 	{
 		m_body->GetInterpolatedTransform(position, orientation);
 	}
+
+	//convert center of mass at world space
+	Math::vec3 ReactRigidBody::ConvertCOMToWorldSpace()
+	{;
+		Math::vec3 pos;
+		Math::quat orientation;
+		m_body->GetTransform(pos, orientation);
+		return pos + orientation * m_centerOfMass;
+	}
+
+	float ReactRigidBody::GetInverseMass() const
+	{
+		return m_inverseMass;
+	}
+
+	Math::mat3 ReactRigidBody::GetInverseInertiaTensor() const
+	{
+		return m_inverseInertiaTensor;
+	}
+
+	//add methods for the inertia tensors here as helper function will be used in the add collider functions.
+
+	//rectular prism inertia tensor
+	Math::mat3 ReactRigidBody::RectangleInertiaTensor(const float& mass, const Math::vec3& size)
+	{
+		float x = size.x;
+		float y = size.y;
+		float z = size.z;
+
+		float Ixx = (mass / 12.0f) * (y * y + z * z);
+		float Iyy = (mass / 12.0f) * (x * x + z * z);
+		float Izz = (mass / 12.0f) * (x * x + y * y);
+
+		return Math::mat3{ Ixx, 0.0f, 0.0f,
+						   0.0f, Iyy, 0.0f,
+						   0.0f, 0.0f, Izz };
+	}
+
+	//sphere inertia tensor
+	Math::mat3 ReactRigidBody::SphereInertiaTensor(const float& mass, const float& radius)
+	{
+		float I = (2.0f / 5.0f) * mass * radius * radius;
+		return Math::mat3{ I, 0.0f, 0.0f,
+						   0.0f, I, 0.0f,
+						   0.0f, 0.0f, I };
+	}
+
+	//sphereshell inertia tensor
+
+	//cylinder inertia tensor
+
+	//cylindershell inertia tensor
 }

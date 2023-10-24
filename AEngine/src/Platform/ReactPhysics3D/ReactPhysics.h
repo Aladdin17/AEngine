@@ -64,8 +64,9 @@ namespace AEngine
 	{
 	private:
 		virtual void onContact(const CollisionCallback::CallbackData& callbackData) override;
+		void ResolvePenetration(ReactRigidBody *body1, ReactRigidBody *body2, float penetration, const Math::vec3 &normal);
+		void CollisionResolution(ReactRigidBody *body1, ReactRigidBody *body2, const Math::vec3 &body1ContactPoint, const Math::vec3 &body2ContactPoint, const Math::vec3 &normal);
 	};
-
 
 		/**
 		 * \class ReactPhysicsAPI

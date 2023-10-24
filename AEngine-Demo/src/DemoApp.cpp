@@ -56,6 +56,38 @@ public:
 
 	void OnUpdate(AEngine::TimeStep ts) override
 	{
+		if(AEngine::Input::IsMouseButtonPressedNoRepeat(AEMouse::BUTTON_LEFT))
+		{
+			using namespace AEngine;
+			DebugCamera& cam = Scene::GetDebugCamera();
+			Math::vec3 pos = cam.GetPosition();
+			Math::vec3 front = cam.GetFront();
+			const float projectileSpeed = 20.0f;
+			Math::vec3 projectileVelocity = front * projectileSpeed;
+
+			Entity projectile = SceneManager::GetActiveScene()->CreateEntity("projectile");
+
+			TransformComponent* transform = projectile.AddComponent<TransformComponent>();
+			transform->translation = pos;
+			transform->orientation = Math::quat{ Math::vec3{0.0f, 0.0f, 0.0f} };
+			transform->scale = Math::vec3{ 1.0f };
+
+			RigidBodyComponent* rigidBody = projectile.AddComponent<RigidBodyComponent>();
+			rigidBody->ptr = SceneManager::GetActiveScene()->GetPhysicsWorld()->AddRigidBody(pos, Math::quat{ Math::vec3{0.0f, 0.0f, 0.0f} });
+			rigidBody->ptr->SetMass(0.5f);
+			rigidBody->ptr->SetLinearVelocity(projectileVelocity);
+			rigidBody->ptr->AddSphereCollider(0.5f);
+
+			RenderableComponent* render = projectile.AddComponent<RenderableComponent>();
+			render->active = true;
+			render->model = AssetManager<Model>::Instance().Get("sphere.gltf");
+			render->shader = AssetManager<Shader>::Instance().Get("simple.shader");
+
+			ScriptableComponent* scriptComponent = projectile.AddComponent<ScriptableComponent>();
+			Script* script = AssetManager<Script>::Instance().Get("projectile.lua").get();
+			scriptComponent->script = MakeUnique<EntityScript>(projectile, ScriptEngine::GetState(), script);
+		}
+
 		if (AEngine::Input::IsKeyPressedNoRepeat(AEKey::F4))
 		{
 			if (AEngine::SceneManager::GetActiveScene()->IsPhysicsRenderingEnabled())
@@ -118,6 +150,6 @@ public:
 
 AEngine::Application* AEngine::CreateApplication(AEngine::Application::Properties& props)
 {
-	props.title = "Christien's Physics Demo";
+	props.title = "Geoff's Physics Demo";
 	return new DemoApp(props);
 }

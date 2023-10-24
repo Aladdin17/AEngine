@@ -38,6 +38,12 @@ namespace AEngine
 			 * \return Camera position
 			*/
 		Math::vec3 GetPosition() const;
+
+			/**
+			 * \brief Get the camera front vector
+			 * \return Camera front vector
+			*/
+		Math::vec3 GetFront() const;
 			/**
 			 * \brief Get the camera yaw
 			 * \return Camera yaw

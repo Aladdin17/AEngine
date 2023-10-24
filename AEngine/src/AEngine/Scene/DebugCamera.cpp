@@ -27,6 +27,11 @@ namespace AEngine
 		return m_pos;
 	}
 
+	Math::vec3 DebugCamera::GetFront() const
+	{
+		return m_front;
+	}
+
 	float DebugCamera::GetYaw() const
 	{
 		return m_yaw;

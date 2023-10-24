@@ -7,6 +7,8 @@ assets:
     path: assets/models/Box/box.gltf
   - type: model
     path: assets/models/Sphere/sphere.gltf
+  - type: script
+    path: assets/scripts/projectile.lua
 
 entities:
   - TagComponent:
@@ -40,3 +42,41 @@ entities:
           orientation: [ 0.0, 0.0, 0.0 ]
           offset: [ 0.0, 0.0, 0.0 ]
           halfExtents: [ 10.0, 15.0, 1.5 ]
+  - TagComponent:
+      tag: Box2
+    TransformComponent:
+      translation: [ 0.0, 5.0, -40.0 ]
+      orientation: [ 0.0, 0.0, 0.0 ]
+      scale: [ 20.0, 30.0, 3.0 ]
+    RenderableComponent:
+      active: true
+      model: box.gltf
+      shader: simple.shader
+    RigidBodyComponent:
+      type: dynamic
+      massKg: 5.0
+      hasGravity: false
+      colliders:
+        - type: Box
+          orientation: [ 0.0, 0.0, 0.0 ]
+          offset: [ 0.0, 0.0, 0.0 ]
+          halfExtents: [ 10.0, 15.0, 1.5 ]
+  - TagComponent:
+      tag: Floor
+    TransformComponent:
+      translation: [ 0.0, -10.0, .0 ]
+      orientation: [ 0.0, 0.0, 0.0 ]
+      scale: [ 100.0, 1.0, 100.0 ]
+    RenderableComponent:
+      active: true
+      model: box.gltf
+      shader: simple.shader
+    RigidBodyComponent:
+      type: static
+      massKg: 1.0
+      hasGravity: false
+      colliders:
+        - type: Box
+          orientation: [ 0.0, 0.0, 0.0 ]
+          offset: [ 0.0, 0.0, 0.0 ]
+          halfExtents: [ 50.0, 0.5, 50.0 ]

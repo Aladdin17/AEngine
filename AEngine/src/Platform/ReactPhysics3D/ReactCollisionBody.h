@@ -163,6 +163,9 @@ namespace AEngine
 			*/
 		virtual const Math::vec3 GetAngularVelocity() const override;
 
+		void SetCenterOfMass(const Math::vec3& centerOfMass);
+
+		Math::vec3 GetCenterOfMass() const;
 
 		//--------------------------------------------------------------------------------
 		// From CollisionBody
@@ -201,11 +204,21 @@ namespace AEngine
 			 */
 		virtual void GetInterpolatedTransform(Math::vec3& position, Math::quat& orientation) override;
 
+		Math::vec3 ConvertCOMToWorldSpace();
+
+		float GetInverseMass() const;
+
+		Math::mat3 GetInverseInertiaTensor() const;
+
+		Math::mat3 RectangleInertiaTensor(const float &mass, const Math::vec3 &size);
+		Math::mat3 SphereInertiaTensor(const float &mass, const float &radius);
+
 	private:
 		UniquePtr<ReactCollisionBody> m_body;       ///< The ReactCollisionBody associated with the rigid body.
 		RigidBody::Type m_type;                     ///< The type of the rigid body.
 
 		// physical properties
+		Math::vec3 m_centerOfMass{ 0.0f };          ///< The center of mass of the rigid body.
 		float m_mass{ 0.0f };                       ///< The mass of the rigid body in kilograms.
 		float m_linearDamping{ 0.0f };              ///< The linear damping factor of the rigid body, between 0 and 1 incl.
 		float m_angularDamping{ 0.0f };             ///< The angular damping factor of the rigid body, between 0 and 1 incl.

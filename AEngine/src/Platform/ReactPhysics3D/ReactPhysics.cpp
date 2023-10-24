@@ -46,21 +46,26 @@ namespace AEngine
 
 			if(contactPair.getEventType() == CollisionCallback::ContactPair::EventType::ContactExit)
 			{
-				return;
+				continue;
 			}
 
 			ReactRigidBody* body1 = static_cast<ReactRigidBody*>(contactPair.getBody1()->getUserData());
 			ReactRigidBody* body2 = static_cast<ReactRigidBody*>(contactPair.getBody2()->getUserData());
 			
-			//check if either body is nullptr
+			if(body1 == nullptr || body2 == nullptr)
+			{
+				continue;
+			}
 			// check if either body is static implement later
 			//if (body1->IsStatic() || body2->IsStatic()) something like that
 
 			for(unsigned int c = 0; c < contactPair.getNbContactPoints(); c++)
 			{
-				CollisionCallback::ContactPoint contactPoint = contactPair.getContactPoint(c);
+				CollisionCallback::ContactPoint contactPoint = contactPair.getContactPoint(0);
 				float penetration = contactPoint.getPenetrationDepth();
 				Math::vec3 normal = RP3DToAEMath(contactPoint.getWorldNormal());
+
+				AE_LOG_DEBUG("Normal: '{}', '{}', '{}'", normal.x, normal.y, normal.z);
 
 				rp3d::Vector3 body1Contact = contactPair.getCollider1()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider1();
 				rp3d::Vector3 body2Contact = contactPair.getCollider2()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider2();
@@ -71,6 +76,7 @@ namespace AEngine
 				AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body1ContactPoint.x, body1ContactPoint.y, body1ContactPoint.z);
 				AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body2ContactPoint.x, body2ContactPoint.y, body2ContactPoint.z);
 
+				
 				ResolvePenetration(body1, body2, penetration, normal);
 				CollisionResolution(body1, body2, body1ContactPoint, body2ContactPoint, normal);
 			}
@@ -254,8 +260,6 @@ namespace AEngine
 
 	void ReactEventListener::ResolvePenetration(ReactRigidBody* body1, ReactRigidBody* body2, float penetration, const Math::vec3& normal)
 	{
-		// to be implemented
-		//change logic based on type of body
 		if(body1->GetType() != RigidBody::Type::Static)
 		{
 			Math::vec3 pos1;
@@ -273,7 +277,6 @@ namespace AEngine
 			Math::vec3 newPos2 = pos2 + penetration * normal;
 			body2->SetTransform(newPos2, orient2);
 		}
-		
 	}
 
 	void ReactEventListener::CollisionResolution(ReactRigidBody* body1, ReactRigidBody* body2, const Math::vec3& body1ContactPoint, const Math::vec3& body2ContactPoint, 
@@ -298,7 +301,7 @@ namespace AEngine
 		Math::vec3 r1CrossN = Math::cross(r1, normal);
 		Math::vec3 r2CrossN = Math::cross(r2, normal);
 
-		float numerator = restitution * (Math::dot(relativeVelocity, normal) + Math::dot(body1->GetAngularVelocity(), r1CrossN) 
+		float numerator = restitution * (Math::dot(normal, relativeVelocity) + Math::dot(body1->GetAngularVelocity(), r1CrossN) 
 							- Math::dot(body2->GetAngularVelocity(), r2CrossN));
 
 		float denominator = combinedInverseMass + (Math::dot(r1CrossN, body1->GetInverseInertiaTensor() * r1CrossN) 

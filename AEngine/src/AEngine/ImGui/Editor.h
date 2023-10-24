@@ -65,9 +65,11 @@ namespace AEngine
 			* @brief Method to create an ImGui Frame for Scene Debug Information
 			*/
 		void ShowDebugWindow();
-			/**
-			* @brief Method to create an ImGui Frame for the Entity Heirarchy
-			*/
+		void SelectPhysicsItems();
+		void SelectPhysicsShapes();
+		/**
+		 * @brief Method to create an ImGui Frame for the Entity Heirarchy
+		 */
 		void ShowHierarchy();
 			/**
 			* @brief Method to create an ImGui Frame for the Component Inspector

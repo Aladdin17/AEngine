@@ -311,14 +311,12 @@ namespace AEngine
 		return m_inverseInertiaTensor;
 	}
 
-	//add methods for the inertia tensors here as helper function will be used in the add collider functions.
-
-	//rectular prism inertia tensor
+	//rectangular prism inertia tensor
 	Math::mat3 ReactRigidBody::RectangleInertiaTensor(const float& mass, const Math::vec3& size)
 	{
-		float x = size.x;
-		float y = size.y;
-		float z = size.z;
+		float x = size.x * 2;
+		float y = size.y * 2;
+		float z = size.z * 2;
 
 		float Ixx = (mass / 12.0f) * (y * y + z * z);
 		float Iyy = (mass / 12.0f) * (x * x + z * z);

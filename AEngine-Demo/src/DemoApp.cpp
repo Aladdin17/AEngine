@@ -62,7 +62,7 @@ public:
 			DebugCamera& cam = Scene::GetDebugCamera();
 			Math::vec3 pos = cam.GetPosition();
 			Math::vec3 front = cam.GetFront();
-			const float projectileSpeed = 20.0f;
+			const float projectileSpeed = 30.0f;
 			Math::vec3 projectileVelocity = front * projectileSpeed;
 
 			Entity projectile = SceneManager::GetActiveScene()->CreateEntity("projectile");
@@ -74,7 +74,7 @@ public:
 
 			RigidBodyComponent* rigidBody = projectile.AddComponent<RigidBodyComponent>();
 			rigidBody->ptr = SceneManager::GetActiveScene()->GetPhysicsWorld()->AddRigidBody(pos, Math::quat{ Math::vec3{0.0f, 0.0f, 0.0f} });
-			rigidBody->ptr->SetMass(0.5f);
+			rigidBody->ptr->SetMass(1.0f);
 			rigidBody->ptr->SetLinearVelocity(projectileVelocity);
 			rigidBody->ptr->AddSphereCollider(0.5f);
 

@@ -58,27 +58,38 @@ namespace AEngine
 			}
 			// check if either body is static implement later
 			//if (body1->IsStatic() || body2->IsStatic()) something like that
+			if(body1->GetType() != RigidBody::Type::Static || body2->GetType() != RigidBody::Type::Static)
+			{ 
+				for(unsigned int c = 0; c < contactPair.getNbContactPoints(); c++)
+				{
+					CollisionCallback::ContactPoint contactPoint = contactPair.getContactPoint(c);
+					float numContactPoints = contactPair.getNbContactPoints();
+					float penetration = contactPoint.getPenetrationDepth();
+					Math::vec3 normal = RP3DToAEMath(contactPoint.getWorldNormal());
 
-			for(unsigned int c = 0; c < contactPair.getNbContactPoints(); c++)
-			{
-				CollisionCallback::ContactPoint contactPoint = contactPair.getContactPoint(0);
-				float penetration = contactPoint.getPenetrationDepth();
-				Math::vec3 normal = RP3DToAEMath(contactPoint.getWorldNormal());
+					AE_LOG_DEBUG("Penetration: '{}'", penetration);
+					AE_LOG_DEBUG("Normal: '{}', '{}', '{}'", normal.x, normal.y, normal.z);
+					
+					rp3d::Vector3 body1ContactTotal = rp3d::Vector3(0, 0, 0);
+					rp3d::Vector3 body1Contact = contactPair.getCollider1()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider1();
+					body1ContactTotal = body1ContactTotal + body1Contact;
+					
+					rp3d::Vector3 body2ContactTotal = rp3d::Vector3(0, 0, 0);
+					rp3d::Vector3 body2Contact = contactPair.getCollider2()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider2();
+					body2ContactTotal = body2ContactTotal + body2Contact;
 
-				AE_LOG_DEBUG("Normal: '{}', '{}', '{}'", normal.x, normal.y, normal.z);
+					rp3d::Vector3 body1ContactAverage = body1ContactTotal / numContactPoints;
+					rp3d::Vector3 body2ContactAverage = body2ContactTotal / numContactPoints;
+					
+					Math::vec3 body1ContactPoint = RP3DToAEMath(body1ContactAverage);
+					Math::vec3 body2ContactPoint = RP3DToAEMath(body2ContactAverage);
 
-				rp3d::Vector3 body1Contact = contactPair.getCollider1()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider1();
-				rp3d::Vector3 body2Contact = contactPair.getCollider2()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider2();
+					AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body1ContactPoint.x, body1ContactPoint.y, body1ContactPoint.z);
+					AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body2ContactPoint.x, body2ContactPoint.y, body2ContactPoint.z);
 
-				Math::vec3 body1ContactPoint = RP3DToAEMath(body1Contact);
-				Math::vec3 body2ContactPoint = RP3DToAEMath(body2Contact);
-
-				AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body1ContactPoint.x, body1ContactPoint.y, body1ContactPoint.z);
-				AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body2ContactPoint.x, body2ContactPoint.y, body2ContactPoint.z);
-
-				
-				ResolvePenetration(body1, body2, penetration, normal);
-				CollisionResolution(body1, body2, body1ContactPoint, body2ContactPoint, normal);
+					ResolvePenetration(body1, body2, penetration, normal);
+					CollisionResolution(body1, body2, body1ContactPoint, body2ContactPoint, normal);
+				}
 			}
 		}
 	}

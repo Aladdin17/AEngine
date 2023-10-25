@@ -156,14 +156,16 @@ namespace AEngine
 
 	void ReactRigidBody::SetMass(float massKg)
 	{
-		if (massKg <= 0.0f)
+		if(this->GetType() == RigidBody::Type::Static)
 		{
-			AE_LOG_ERROR("ReactRigidBody::SetMass::Mass_must_be_greater_than_zero");
-			return;
+			m_mass = 0;
+			m_inverseMass = 0;
 		}
-
-		m_mass = massKg;
-		m_inverseMass = 1.0f / massKg;
+		else
+		{
+			m_mass = massKg;
+			m_inverseMass = 1.0f / massKg;
+		}
 	}
 
 	float ReactRigidBody::GetMass() const
@@ -173,9 +175,16 @@ namespace AEngine
 
 	void ReactRigidBody::SetInertiaTensor(const Math::mat3& inertiaTensor)
 	{
-		/// \todo Find a way to detect invalid inverse inertia tensors
-		m_inertiaTensor = inertiaTensor;
-		m_inverseInertiaTensor = Math::inverse(inertiaTensor);
+		if(this->GetType() != RigidBody::Type::Static)
+		{
+			m_inertiaTensor = inertiaTensor;
+			m_inverseInertiaTensor = Math::inverse(inertiaTensor);
+		}
+		else
+		{
+			m_inertiaTensor = Math::mat3 {0.0f};
+			m_inverseInertiaTensor = Math::mat3 {0.0f};
+		}
 	}
 
 	Math::mat3 ReactRigidBody::GetInertiaTensor() const
@@ -314,6 +323,11 @@ namespace AEngine
 	//rectangular prism inertia tensor
 	Math::mat3 ReactRigidBody::RectangleInertiaTensor(const float& mass, const Math::vec3& size)
 	{
+		if(this->GetType() == RigidBody::Type::Static)
+		{
+			return Math::mat3{ 0.0f };
+		}
+
 		float x = size.x * 2;
 		float y = size.y * 2;
 		float z = size.z * 2;
@@ -330,10 +344,26 @@ namespace AEngine
 	//sphere inertia tensor
 	Math::mat3 ReactRigidBody::SphereInertiaTensor(const float& mass, const float& radius)
 	{
+		if (this->GetType() == RigidBody::Type::Static)
+		{
+			return Math::mat3{ 0.0f };
+		}
+
 		float I = (2.0f / 5.0f) * mass * radius * radius;
 		return Math::mat3{ I, 0.0f, 0.0f,
 						   0.0f, I, 0.0f,
 						   0.0f, 0.0f, I };
+	}
+
+	Math::mat3 ReactRigidBody::GetInverseInertiaTensorWorld() const
+	{
+		Math::vec3 pos;
+		Math::quat orientationQuat;
+		m_body->GetTransform(pos, orientationQuat);
+
+		Math::mat3 orientationMatrix = Math::toMat3(orientationQuat);
+
+		return  orientationMatrix * m_inverseInertiaTensor * Math::transpose(orientationMatrix);
 	}
 
 	//sphereshell inertia tensor

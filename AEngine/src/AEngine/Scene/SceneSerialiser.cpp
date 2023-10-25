@@ -739,9 +739,10 @@ namespace AEngine
 			TransformComponent* transform = entity.GetComponent<TransformComponent>();
 			RigidBodyComponent* comp = entity.AddComponent<RigidBodyComponent>();
 			comp->ptr = s_scene->m_physicsWorld->AddRigidBody(transform->translation, transform->orientation);
+			comp->ptr->SetType(type);
 			comp->ptr->SetMass(rigidBodyNode["massKg"].as<float>());
 			comp->ptr->SetHasGravity(rigidBodyNode["hasGravity"].as<bool>());
-			comp->ptr->SetType(type);
+			
 
 			YAML::Node colliders = rigidBodyNode["colliders"];
 			if(colliders)

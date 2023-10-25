@@ -213,6 +213,8 @@ namespace AEngine
 		Math::mat3 RectangleInertiaTensor(const float &mass, const Math::vec3 &size);
 		Math::mat3 SphereInertiaTensor(const float &mass, const float &radius);
 
+		Math::mat3 GetInverseInertiaTensorWorld() const;
+
 	private:
 		UniquePtr<ReactCollisionBody> m_body;       ///< The ReactCollisionBody associated with the rigid body.
 		RigidBody::Type m_type;                     ///< The type of the rigid body.

@@ -56,44 +56,55 @@ namespace AEngine
 			{
 				continue;
 			}
-			// check if either body is static implement later
-			//if (body1->IsStatic() || body2->IsStatic()) something like that
+
 			if(body1->GetType() != RigidBody::Type::Static || body2->GetType() != RigidBody::Type::Static)
 			{ 
+				rp3d::Vector3 body1ContactTotal = rp3d::Vector3(0, 0, 0);
+				rp3d::Vector3 body2ContactTotal = rp3d::Vector3(0, 0, 0);
+				float penetrationTotal = 0;
+				Math::vec3 normalTotal = Math::vec3(0, 0, 0);
+				float numContactPoints = contactPair.getNbContactPoints();
+
 				for(unsigned int c = 0; c < contactPair.getNbContactPoints(); c++)
 				{
 					CollisionCallback::ContactPoint contactPoint = contactPair.getContactPoint(c);
-					float numContactPoints = contactPair.getNbContactPoints();
-					float penetration = contactPoint.getPenetrationDepth();
-					Math::vec3 normal = RP3DToAEMath(contactPoint.getWorldNormal());
-
-					AE_LOG_DEBUG("Penetration: '{}'", penetration);
-					AE_LOG_DEBUG("Normal: '{}', '{}', '{}'", normal.x, normal.y, normal.z);
 					
-					rp3d::Vector3 body1ContactTotal = rp3d::Vector3(0, 0, 0);
+					float penetration = contactPoint.getPenetrationDepth();
+					penetrationTotal += penetration;
+					Math::vec3 normal = RP3DToAEMath(contactPoint.getWorldNormal());
+					normalTotal += normal;
+					
 					rp3d::Vector3 body1Contact = contactPair.getCollider1()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider1();
 					body1ContactTotal = body1ContactTotal + body1Contact;
 					
-					rp3d::Vector3 body2ContactTotal = rp3d::Vector3(0, 0, 0);
 					rp3d::Vector3 body2Contact = contactPair.getCollider2()->getLocalToWorldTransform() * contactPoint.getLocalPointOnCollider2();
 					body2ContactTotal = body2ContactTotal + body2Contact;
-
-					rp3d::Vector3 body1ContactAverage = body1ContactTotal / numContactPoints;
-					rp3d::Vector3 body2ContactAverage = body2ContactTotal / numContactPoints;
 					
-					Math::vec3 body1ContactPoint = RP3DToAEMath(body1ContactAverage);
-					Math::vec3 body2ContactPoint = RP3DToAEMath(body2ContactAverage);
-
-					AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body1ContactPoint.x, body1ContactPoint.y, body1ContactPoint.z);
-					AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body2ContactPoint.x, body2ContactPoint.y, body2ContactPoint.z);
-
-					ResolvePenetration(body1, body2, penetration, normal);
-					CollisionResolution(body1, body2, body1ContactPoint, body2ContactPoint, normal);
 				}
+
+				float penetration = penetrationTotal / numContactPoints;
+
+				AE_LOG_DEBUG("Penetration: '{}'", penetration);
+
+				Math::vec3 normal = normalTotal / numContactPoints;
+				normal = Math::normalize(normal);
+
+				AE_LOG_DEBUG("Normal: '{}', '{}', '{}'", normal.x, normal.y, normal.z);
+
+				rp3d::Vector3 body1ContactAverage = body1ContactTotal / numContactPoints;
+				rp3d::Vector3 body2ContactAverage = body2ContactTotal / numContactPoints;
+
+				Math::vec3 body1ContactPoint = RP3DToAEMath(body1ContactAverage);
+				Math::vec3 body2ContactPoint = RP3DToAEMath(body2ContactAverage);
+
+				AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body1ContactPoint.x, body1ContactPoint.y, body1ContactPoint.z);
+				AE_LOG_DEBUG("Collision: '{}', '{}', '{}'", body2ContactPoint.x, body2ContactPoint.y, body2ContactPoint.z);
+
+				ResolvePenetration(body1, body2, penetration, normal);
+				CollisionResolution(body1, body2, body1ContactPoint, body2ContactPoint, normal);
 			}
 		}
 	}
-
 
 //--------------------------------------------------------------------------------
 // ReactPhysicsAPI
@@ -293,21 +304,29 @@ namespace AEngine
 	void ReactEventListener::CollisionResolution(ReactRigidBody* body1, ReactRigidBody* body2, const Math::vec3& body1ContactPoint, const Math::vec3& body2ContactPoint, 
 												const Math::vec3& normal)
 	{
-		float coefficeintOfRestitution = 0.8f;
+		float coefficeintOfRestitution = 0.5f;
 
 		Math::vec3 body1Linear = body1->GetLinearVelocity();
+		AE_LOG_DEBUG("Body 1 Linear Velocity: '{}', '{}', '{}'", body1Linear.x, body1Linear.y, body1Linear.z);
 		Math::vec3 body1Angular = body1->GetAngularVelocity();
+		AE_LOG_DEBUG("Body 1 Angular Velocity: '{}', '{}', '{}'", body1Angular.x, body1Angular.y, body1Angular.z);
 
 		Math::vec3 body2Linear = body2->GetLinearVelocity();
+		AE_LOG_DEBUG("Body 2 Linear Velocity: '{}', '{}', '{}'", body2Linear.x, body2Linear.y, body2Linear.z);
 		Math::vec3 body2Angular = body2->GetAngularVelocity();
-
+		AE_LOG_DEBUG("Body 2 Angular Velocity: '{}', '{}', '{}'", body2Angular.x, body2Angular.y, body2Angular.z);
 		Math::vec3 relativeVelocity = body1Linear - body2Linear;
 
 		Math::vec3 r1 = body1ContactPoint - body1->ConvertCOMToWorldSpace();
+		AE_LOG_DEBUG("Body 1 Contact Point: '{}', '{}', '{}'", body1ContactPoint.x, body1ContactPoint.y, body1ContactPoint.z);
 		Math::vec3 r2 = body2ContactPoint - body2->ConvertCOMToWorldSpace();
+		AE_LOG_DEBUG("Body 2 Contact Point: '{}', '{}', '{}'", body2ContactPoint.x, body2ContactPoint.y, body2ContactPoint.z);
 
 		float restitution = -(1.0f + coefficeintOfRestitution);
 		float combinedInverseMass = body1->GetInverseMass() + body2->GetInverseMass();
+
+		AE_LOG_DEBUG("Body1 Inverse Mass: '{}'", body1->GetInverseMass());
+		AE_LOG_DEBUG("Body2 Inverse Mass: '{}'", body2->GetInverseMass());
 
 		Math::vec3 r1CrossN = Math::cross(r1, normal);
 		Math::vec3 r2CrossN = Math::cross(r2, normal);
@@ -315,20 +334,37 @@ namespace AEngine
 		float numerator = restitution * (Math::dot(normal, relativeVelocity) + Math::dot(body1->GetAngularVelocity(), r1CrossN) 
 							- Math::dot(body2->GetAngularVelocity(), r2CrossN));
 
-		float denominator = combinedInverseMass + (Math::dot(r1CrossN, body1->GetInverseInertiaTensor() * r1CrossN) 
-							+ Math::dot(r2CrossN, body2->GetInverseInertiaTensor() * r2CrossN));
+		AE_LOG_DEBUG("Numerator: '{}'", numerator);
+
+		float denominator = combinedInverseMass + (Math::dot(r1CrossN, body1->GetInverseInertiaTensorWorld() * r1CrossN) 
+							+ Math::dot(r2CrossN, body2->GetInverseInertiaTensorWorld() * r2CrossN));
+
+		AE_LOG_DEBUG("Combined inverseMass: '{}'", combinedInverseMass);
+		AE_LOG_DEBUG("Body1  Dot R1CrossN  & InverseInertiaTensor: '{}'", Math::dot(r1CrossN, body1->GetInverseInertiaTensorWorld() * r1CrossN));
+
+		AE_LOG_DEBUG("R2CrossN: '{}' '{}' '{}'", r2CrossN.x, r2CrossN.y, r2CrossN.z);
+		Math::vec3 something =  body2->GetInverseInertiaTensorWorld() * r2CrossN;
+		AE_LOG_DEBUG("Inverse Tensor * r2CrossN: '{}' '{}' '{}'", something.x, something.y, something.z);
+
+		AE_LOG_DEBUG("Body2  Dot R2CrossN  & InverseInertiaTensor: '{}'", Math::dot(r2CrossN, body2->GetInverseInertiaTensorWorld() * r2CrossN));
+
+		AE_LOG_DEBUG("Denominator: '{}'", denominator);
 
 		float lambda = numerator / denominator;
 
+		AE_LOG_DEBUG("Lambda: '{}'", lambda);
+
 		Math::vec3 impulse = lambda * normal;
+
+		AE_LOG_DEBUG("Impulse: '{}', '{}', '{}'", impulse.x, impulse.y, impulse.z);
 
 		if(lambda < 0)
 		{
 			body1Linear += impulse * body1->GetInverseMass();
-			body1Angular += (lambda * body1->GetInverseInertiaTensor()) * r1CrossN;
+			body1Angular += (lambda * body1->GetInverseInertiaTensorWorld()) * r1CrossN;
 
 			body2Linear -= impulse * body2->GetInverseMass();
-			body2Angular -= (lambda * body2->GetInverseInertiaTensor()) * r2CrossN;
+			body2Angular -= (lambda * body2->GetInverseInertiaTensorWorld()) * r2CrossN;
 
 			if(body1->GetType() != RigidBody::Type::Static)
 			{

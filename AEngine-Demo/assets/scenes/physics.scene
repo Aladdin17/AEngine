@@ -73,7 +73,7 @@ entities:
       shader: simple.shader
     RigidBodyComponent:
       type: static
-      massKg: 1.0
+      massKg: 0.0
       hasGravity: false
       colliders:
         - type: Box

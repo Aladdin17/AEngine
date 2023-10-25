@@ -7,7 +7,7 @@ end
 
 function OnFixedUpdate(dt)
 	timeElasped = timeElasped + dt
-	if(timeElasped > 10.0) then
+	if(timeElasped > 100.0) then
 		entity:Destroy()
 	end
 end

@@ -12,7 +12,7 @@ function OnStart()
 	messageAgent:RegisterMessageHandler(
 		MessageType.DoorOpened,
 		function(msg)
-			if (elapsedTime >= 3.0) then
+			if (elapsedTime >= 15.0) then
 				elapsedTime = 0.0
 				print("Door opened!!!")
 				messageAgent:SendMessageToAgent(
@@ -27,7 +27,7 @@ function OnStart()
 	messageAgent:RegisterMessageHandler(
 		MessageType.DoorClosed,
 		function(msg)
-			if(elapsedTime >= 5.0) then
+			if(elapsedTime >= 20.0) then
 				elapsedTime = 0.0
 				print("Door closed!!!")
 				messageAgent:SendMessageToAgent(
@@ -38,6 +38,7 @@ function OnStart()
 			end
 		end
 	)
+
 end
 
 function OnUpdate(dt)

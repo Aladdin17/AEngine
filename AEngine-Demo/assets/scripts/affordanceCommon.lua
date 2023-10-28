@@ -1,5 +1,6 @@
 --affordanceCommon.lua
 
+--door Affordance stuff
 MessageType = {
 	DoorOpened = 0,
 	DoorClosed = 1,

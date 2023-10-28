@@ -17,7 +17,6 @@ local fsm = FSM.new({
 		function(dt) -- OnUpdate
 			if elapsedTime > 2.5 then
 				elapsedTime = 0
-				print("Door would like to be closed!!!")
 				messageAgent:BroadcastMessage(
 					MessageType.DoorOpened,
 					{}
@@ -36,7 +35,6 @@ local fsm = FSM.new({
 		function(dt) -- OnUpdate
 			if elapsedTime > 2.5 then
 				elapsedTime = 0
-				print("Door would like to be opened!!!")
 				messageAgent:BroadcastMessage(
 					MessageType.DoorClosed,
 					{}
@@ -49,7 +47,7 @@ local fsm = FSM.new({
 		end
 	)},
 	-- Initial State
-	State.Closed
+	State.Opened
 )
 
 function OnStart()

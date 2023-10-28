@@ -5,9 +5,10 @@ assets:
     path: assets/shaders/skybox.shader
 
   - type: script
-    path: assets/scripts/affordance1.lua
+    path: assets/scripts/doorAffordance.lua
   - type: script
-    path: assets/scripts/affordance2.lua
+    path: assets/scripts/affordanceTesting.lua
+    
 
 entities:
   - TagComponent:
@@ -25,9 +26,10 @@ entities:
   - TagComponent:
       tag: Door
     ScriptableComponent:
-      script: affordance1.lua
+      script: doorAffordance.lua
   - TagComponent:
       tag: Teacher
     ScriptableComponent:
-      script: affordance2.lua
+      script: affordanceTesting.lua
+
     

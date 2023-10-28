@@ -78,14 +78,14 @@ public:
 		using namespace AEngine;
 
 		// load scenes
-		Scene *physicsScene = SceneManager::LoadFromFile("assets/scenes/level1.scene");
+		Scene *physicsScene = SceneManager::LoadFromFile("assets/scenes/affordanceTest.scene");
 		if (!physicsScene)
 		{
 			exit(1);
 		}
 
 		// set active scene and debug camera
-		SceneManager::SetActiveScene("level1");
+		SceneManager::SetActiveScene("affordanceTest");
 		Scene::UseDebugCamera(true);
 		DebugCamera& debugCam = Scene::GetDebugCamera();
 		debugCam.SetFarPlane(10000.0f);

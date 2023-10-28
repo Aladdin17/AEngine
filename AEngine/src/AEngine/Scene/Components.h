@@ -171,17 +171,5 @@ namespace AEngine
 		float fallDrag;
 
 		PlayerController* ptr;
-	};
-
-	//struct SphereCollider
-	//{
-	//	// runtime
-	//	Physics::Collider *collider;
-	//	Physics::CollisionBody *body;
-
-	//	// config
-	//	bool isTrigger;
-	//	float size;
-	//	Math::vec3 center;
-	//};
+	};	
 }

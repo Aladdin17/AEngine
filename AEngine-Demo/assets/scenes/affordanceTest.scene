@@ -1,0 +1,33 @@
+assets:
+  - type: shader
+    path: assets/shaders/simple.shader
+  - type: shader
+    path: assets/shaders/skybox.shader
+
+  - type: script
+    path: assets/scripts/affordance1.lua
+  - type: script
+    path: assets/scripts/affordance2.lua
+
+entities:
+  - TagComponent:
+      tag: Skybox
+    SkyboxComponent:
+        active: true
+        shader: skybox.shader
+        texturePaths:
+          - assets/textures/skybox/right.jpg
+          - assets/textures/skybox/left.jpg
+          - assets/textures/skybox/top.jpg
+          - assets/textures/skybox/bottom.jpg
+          - assets/textures/skybox/front.jpg
+          - assets/textures/skybox/back.jpg
+  - TagComponent:
+      tag: Door
+    ScriptableComponent:
+      script: affordance1.lua
+  - TagComponent:
+      tag: Teacher
+    ScriptableComponent:
+      script: affordance2.lua
+    

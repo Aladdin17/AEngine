@@ -39,6 +39,21 @@ function OnStart()
 		end
 	)
 
+	messageAgent:RegisterMessageHandler(
+		MessageType.ButtonInteracted,
+		function(msg)
+			if(elapsedTime >= 2.0) then
+				elapsedTime = 0.0
+				print("Button idle!!!")
+				messageAgent:SendMessageToAgent(
+					msg.sender,
+					MessageType.ButtonInteracted,
+					{}
+				)
+			end
+		end
+	)
+
 end
 
 function OnUpdate(dt)

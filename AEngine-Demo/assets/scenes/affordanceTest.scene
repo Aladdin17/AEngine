@@ -35,6 +35,7 @@ entities:
       script: affordanceTesting.lua
   - TagComponent:
       tag: Button
+    ScriptableComponent:
       script: buttonAffordance.lua
 
     

@@ -16,17 +16,14 @@ local fsm = FSM.new({
 		"Idle",
 		{ State.Pressed },	--transitions to
 		function(dt) -- OnUpdate
-			if elapsedTime > 2.5 then
-				elapsedTime = 0
-				messageAgent:BroadcastMessage(
-					MessageType.ButtonInteracted,
-					{}
-				)
-			end
-			return State.Pressed
+			return State.Idle
 		end,
 		function() -- OnEntry
 			elapsedTime = 0
+			messageAgent:BroadcastMessage(
+				MessageType.ButtonReleased,
+				{}
+			)
 		end
 	),
 
@@ -36,15 +33,16 @@ local fsm = FSM.new({
 		function(dt) -- OnUpdate
 			if elapsedTime > 2.5 then
 				elapsedTime = 0
-				messageAgent:BroadcastMessage(
-					MessageType.ButtonInteracted,
-					{}
-				)
+				return State.Released
 			end
-			return State.Released
+			return State.Pressed
 		end,
 		function() -- OnEntry
 			elapsedTime = 0
+			messageAgent:BroadcastMessage(
+			 	MessageType.ButtonPressed,
+			 	{}
+			)
 		end
 	),
 
@@ -52,21 +50,19 @@ local fsm = FSM.new({
 		"Released",
 		{ State.Idle },
 		function(dt) -- OnUpdate
-			if elapsedTime > 2.5 then
+			if elapsedTime > 1.5 then
 				elapsedTime = 0
-				messageAgent:BroadcastMessage(
-					MessageType.ButtonInteracted,
-					{}
-				)
+				return State.Idle
 			end
-			return State.Idle
+			return State.Released
 		end,
 		function() -- OnEntry
 			elapsedTime = 0
+			
 		end
 	)},
 	-- Initial State
-	State.Idle
+	State.Pressed
 )
 
 function OnStart()
@@ -79,12 +75,6 @@ function OnStart()
 			if (fsm:GetCurrentState() == State.Idle) then
 				fsm:GoToState(State.Pressed)
 				print("Button Pressed by " .. msg.sender)
-			elseif (fsm:GetCurrentState() == State.Pressed) then
-				fsm:GoToState(State.Released)
-				print("Button Released.")
-			elseif (fsm:GetCurrentState() == State.Released) then
-				fsm:GoToState(State.Idle)
-				print("Button Idle.")
 			end
 		end
 	)

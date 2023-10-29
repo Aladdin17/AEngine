@@ -12,7 +12,7 @@ function OnStart()
 	messageAgent:RegisterMessageHandler(
 		MessageType.DoorOpened,
 		function(msg)
-			if (elapsedTime >= 15.0) then
+			if (elapsedTime >= 10.0) then
 				elapsedTime = 0.0
 				print("Door opened!!!")
 				messageAgent:SendMessageToAgent(
@@ -27,7 +27,7 @@ function OnStart()
 	messageAgent:RegisterMessageHandler(
 		MessageType.DoorClosed,
 		function(msg)
-			if(elapsedTime >= 20.0) then
+			if(elapsedTime >= 15.0) then
 				elapsedTime = 0.0
 				print("Door closed!!!")
 				messageAgent:SendMessageToAgent(
@@ -40,17 +40,21 @@ function OnStart()
 	)
 
 	messageAgent:RegisterMessageHandler(
-		MessageType.ButtonInteracted,
+		MessageType.ButtonPressed,
 		function(msg)
-			if(elapsedTime >= 2.0) then
-				elapsedTime = 0.0
-				print("Button idle!!!")
+			print("Button pressed!!!")
+		end
+	)
+
+	messageAgent:RegisterMessageHandler(
+		MessageType.ButtonReleased,
+		function(msg)
+				print("Button Released!!!")
 				messageAgent:SendMessageToAgent(
 					msg.sender,
 					MessageType.ButtonInteracted,
 					{}
-				)
-			end
+			)
 		end
 	)
 

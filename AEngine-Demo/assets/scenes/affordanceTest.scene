@@ -10,6 +10,8 @@ assets:
     path: assets/scripts/affordanceTesting.lua
   - type: script
     path: assets/scripts/buttonAffordance.lua
+  - type: script
+    path: assets/scripts/bookAffordance.lua
     
 
 entities:
@@ -37,5 +39,7 @@ entities:
       tag: Button
     ScriptableComponent:
       script: buttonAffordance.lua
-
-    
+  - TagComponent:
+      tag: Book
+    ScriptableComponent:
+      script: bookAffordance.lua    

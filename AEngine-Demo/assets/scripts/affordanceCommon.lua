@@ -8,7 +8,12 @@ MessageType = {
 	ButtonIdle = 3,
 	ButtonPressed = 4,
 	ButtonReleased = 5,
-	ButtonInteracted = 6
+	ButtonInteracted = 6,
+	BookSafe = 7,
+	BookPickedUp = 8,
+	BookDropped = 9,
+	BookThrown = 10,
+	BookLost = 11
 }
 
 DoorData = {}
@@ -31,6 +36,18 @@ end
 
 ButtonInteractedData = {}
 function ButtonInteractedData.new()
+	local instance = {}
+	return instance
+end
+
+BookData = {}
+function BookData.new()
+	local instance = {}
+	return instance
+end
+
+BookInteractedData = {}
+function BookInteractedData.new()
 	local instance = {}
 	return instance
 end

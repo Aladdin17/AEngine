@@ -101,6 +101,8 @@ assets:
     path: assets/scripts/player.lua
   - type: script
     path: assets/scripts/projectile.lua
+  - type: script
+    path: assets/scripts/Door.lua
   - type: grid
     path: assets/grid/test.grid
 entities:
@@ -902,6 +904,8 @@ entities:
       active: true
       model: door.gltf
       shader: simple.shader
+    ScriptableComponent:
+      script: Door.lua
     RigidBodyComponent:
       type: static
       hasGravity: false

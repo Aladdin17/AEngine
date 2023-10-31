@@ -392,6 +392,10 @@ namespace AEngine
 			return Math::clamp(value, min, max);
 		};
 
+		auto to_quat = [](Math::vec3 vector) -> Math::quat {
+			return Math::quat(Math::radians(vector));
+		};
+
 		state["AEMath"] = state.create_table();
 		state["AEMath"]["Rotate"] = rotate_overload;
 		state["AEMath"]["RotateVec"] = Math::rotateVec;
@@ -400,6 +404,7 @@ namespace AEngine
 		state["AEMath"]["Clamp"] = clamp;
 		state["AEMath"]["Dot"] = dotProduct_overload;
 		state["AEMath"]["Cross"] = crossProduct_overload;
+		state["AEMath"]["Vec3ToQuat"] = to_quat;
 	}
 
 	void RegisterVec2(sol::state& state)
@@ -1024,10 +1029,20 @@ namespace AEngine
 			return nav->grid->GetAStarPath(startPos, endPos, check_neighbours);
 		};
 
+		auto add_obstacle = [](NavigationGridComponent* nav, const Math::vec3& pos, const std::string& id, int radius) {
+			nav->grid->AddObstacle(pos, id, radius);
+		};
+
+		auto toggle_obstacle = [](NavigationGridComponent* nav, const std::string& id, bool enable) {
+			nav->grid->ToggleObstacle(id, enable);
+		};
+
 		state.new_usertype<NavigationGridComponent>(
 			"NavigationGridComponent",
 			sol::constructors<NavigationGridComponent()>(),
-			"GetWaypoints", get_waypoints
+			"GetWaypoints", get_waypoints,
+			"AddObstacle", add_obstacle,
+			"ToggleObstacle", toggle_obstacle
 		);
 	}
 

@@ -6,6 +6,7 @@
 #include "AEngine/Core/PerspectiveCamera.h"
 #include "AEngine/Resource/Asset.h"
 #include <vector>
+#include <map>
 
 namespace AEngine
 {
@@ -38,6 +39,8 @@ namespace AEngine
         Math::vec3 GetPosition();
 
 
+	    void ToggleObstacle(const std::string& id, bool enabled);
+	    void AddObstacle(const Math::vec3& position, const std::string& id, int radius);
         void SaveToFile(const std::string& path);
 
         bool IsActive(int row, int coloumn);
@@ -61,6 +64,7 @@ namespace AEngine
         float m_tileSize;
         Math::vec3 m_position;
         std::vector<std::vector<Node>> m_grid;
+        std::map<std::string, std::vector<std::pair<int, int>>> m_obstacles;
         SharedPtr<VertexArray> m_debugGrid;
         SharedPtr<Shader> m_debugShader;
 

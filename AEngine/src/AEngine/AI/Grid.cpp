@@ -271,7 +271,42 @@ namespace AEngine
 		}
 
 		return Math::ivec2(-1, -1);
-	}	
+	}
+
+	void Grid::AddObstacle(const Math::vec3& position, const std::string& id, int radius)
+	{
+		Math::ivec2 tile = GetTile(position, false);
+
+		if(tile.x == -1)
+			return;
+
+		for(int x = tile.x - radius; x <= tile.x + radius; x++)
+		{
+			for(int y = tile.y - radius; y <= tile.y + radius; y++)
+			{
+				if(x >= 0 && x < m_gridSize.x && y >= 0 && y < m_gridSize.y)
+				{
+					if(m_grid[x][y].isActive)
+					{
+						m_obstacles[id].push_back({x, y});
+					}
+				}
+			}
+		}
+	}
+
+	void Grid::ToggleObstacle(const std::string& id, bool enabled)
+	{
+		if(m_obstacles.find(id) == m_obstacles.end())
+			return;
+
+		for(auto& node : m_obstacles[id])
+		{
+			m_grid[node.first][node.second].isActive = !enabled;
+		}
+
+		GenerateGrid();
+	}
 
 	// Convert from world coordinates to grid coordinates
 	std::vector<float> Grid::GetAStarPath(Math::vec3 start, Math::vec3 end, bool checkNeighbours)

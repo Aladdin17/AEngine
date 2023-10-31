@@ -3,7 +3,8 @@ AgentCategory = {
 	PLAYER = 1,
 	BOOK = 2,
 	BUTTON = 3,
-	RUNTIME = 4
+	DOOR = 4,
+	RUNTIME = 5
 }
 
 MessageType = {
@@ -12,8 +13,9 @@ MessageType = {
     INTERACTABLE = 2,
 	PRESSABLE = 3,
 	PRESSED = 4,
-	TEXT = 5,
-	HOME = 6
+	OPENABLE = 5,
+	TEXT = 6,
+	HOME = 7
 }
 
 Position_Data = {}

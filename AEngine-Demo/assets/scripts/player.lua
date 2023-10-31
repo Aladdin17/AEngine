@@ -127,6 +127,12 @@ local function UpdateMovement(dt)
 				MessageType.PRESSED,
 				Position_Data.new(entity:GetTransformComponent().translation)
 			)
+
+			messageAgent:SendMessageToCategory(
+				AgentCategory.DOOR,
+				MessageType.OPENABLE,
+				Position_Data.new(entity:GetTransformComponent().translation)
+			)
 		end
 	end
 

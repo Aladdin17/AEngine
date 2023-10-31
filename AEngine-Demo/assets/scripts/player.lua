@@ -10,9 +10,11 @@ local heldEntity
 
 local interactInRange = false
 local pressableInRange = false
+local doorInRange = false
 
 local interactUI
 local pressableUI
+local doorUI
 
 -- look
 local lookSpeed = 5.0
@@ -46,6 +48,15 @@ function OnStart()
 		function (msg)
 			if(AEMath.Length(position - msg.payload.pos) < 15.0) then
 				pressableInRange = true;
+			end
+		end
+	)
+
+	messageAgent:RegisterMessageHandler(
+		MessageType.OPENDOOR,
+		function (msg)
+			if(AEMath.Length(position - msg.payload.pos) < 20.0) then
+				doorInRange = true;
 			end
 		end
 	)
@@ -171,6 +182,13 @@ function OnUpdate(dt)
 		interactUI.active = interactInRange;
 	end
 
+	if(doorUI == nil) then
+		doorUI = SceneManager.GetActiveScene():GetEntity("AffordanceUI3"):GetCanvasRendererComponent();
+	else
+		doorUI.active = doorInRange;
+	end
+
 	interactInRange = false
 	pressableInRange = false
+	doorInRange = false
 end

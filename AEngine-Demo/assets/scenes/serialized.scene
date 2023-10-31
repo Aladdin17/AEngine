@@ -50,6 +50,8 @@ assets:
   - type: texture
     path: assets/maps/dirt.jpg
   - type: texture
+    path: assets/textures/UI/doorUI.jpg
+  - type: texture
     path: assets/models/Building/floor.jpg
   - type: texture
     path: assets/maps/grass.jpg
@@ -142,6 +144,20 @@ entities:
       billboard: false
     PanelComponent:
       texture: pressable.jpg
+      color: [1, 1, 1, 1]
+  - TagComponent:
+      tag: AffordanceUI3
+    RectTransformComponent:
+      translation: [0.963999987, 0.741999984, 0]
+      orientation: [0, -0, 0]
+      scale: [0.0250000004, 0.0250000004, 0]
+      size: [10, 10]
+    CanvasRendererComponent:
+      active: false
+      screen-space: true
+      billboard: false
+    PanelComponent:
+      texture: doorUI.jpg
       color: [1, 1, 1, 1]
   - TagComponent:
       tag: Book
@@ -337,7 +353,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk11
@@ -370,7 +386,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk12
@@ -403,7 +419,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk13
@@ -436,7 +452,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk2
@@ -469,7 +485,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk3
@@ -502,7 +518,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk4
@@ -535,7 +551,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk5
@@ -568,7 +584,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk6
@@ -601,7 +617,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk7
@@ -634,7 +650,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk8
@@ -667,7 +683,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Desk9
@@ -700,7 +716,7 @@ entities:
           halfExtents: [0.5, 2.29999995, 3.70000005]
         - type: Box
           offset: [6.69999981, 3.5, 2]
-          orientation: [0, -73.4810104, 0]
+          orientation: [0, -73.4810028, 0]
           halfExtents: [0.5, 3.9000001, 2.4000001]
   - TagComponent:
       tag: Door

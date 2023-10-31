@@ -12,6 +12,8 @@ local open = 0
 local close = -89
 local rotation = 0
 
+local position
+
 -- Animate door
 local function animate(dt)
     if animating then
@@ -73,6 +75,13 @@ function OnFixedUpdate(dt)
         doorTransform = entity:GetTransformComponent()
         doorPhysicsBody = entity:GetPhysicsBody()
     end
+
+    position = entity:GetTransformComponent().translation
+    messageAgent:SendMessageToCategory(
+        AgentCategory.PLAYER,
+        MessageType.OPENDOOR,
+        Position_Data.new(position)
+    )
 end
 
 function OnDestroy()

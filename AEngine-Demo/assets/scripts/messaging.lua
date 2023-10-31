@@ -14,8 +14,9 @@ MessageType = {
 	PRESSABLE = 3,
 	PRESSED = 4,
 	OPENABLE = 5,
-	TEXT = 6,
-	HOME = 7
+	GRIDUPDATE = 6,
+	TEXT = 7,
+	HOME = 8
 }
 
 Position_Data = {}

@@ -2,7 +2,7 @@
 dofile("assets/scripts/messaging.lua")
 
 local messageAgent
-local isOpen
+local isOpen = true
 local grid
 local doorTransform
 local doorPhysicsBody
@@ -16,15 +16,15 @@ local rotation = 0
 local function animate(dt)
     if animating then
         if isOpen then
-            if rotation > close then
-                rotation = rotation - 90 * dt
+            if rotation < open then
+                rotation = rotation + 90 * dt
                 doorPhysicsBody:SetRotation(AEMath.Vec3ToQuat(Vec3.new(0, rotation, 0)))
             else
                 animating = false
             end
         else
-            if rotation < open then
-                rotation = rotation + 90 * dt
+            if rotation > close then
+                rotation = rotation - 90 * dt
                 doorPhysicsBody:SetRotation(AEMath.Vec3ToQuat(Vec3.new(0, rotation, 0)))
             else
                 animating = false
@@ -43,14 +43,21 @@ function OnStart()
                 -- Door is being closed
                 if isOpen then
                     isOpen = false
-                    grid:ToggleObstacle("Door", false)
+                    grid:ToggleObstacle("Door", true)
                     animating = true
                 -- Door is being opened
                 else
                     isOpen = true
-                    grid:ToggleObstacle("Door", true)
+                    grid:ToggleObstacle("Door", false)
                     animating = true
                 end
+
+                -- Notify teacher that the grid has updated
+                messageAgent:SendMessageToCategory(
+                    AgentCategory.TEACHER,
+                    MessageType.GRIDUPDATE,
+                    {}
+                )
             end
         end
     )

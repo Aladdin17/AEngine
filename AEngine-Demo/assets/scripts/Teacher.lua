@@ -16,6 +16,8 @@ local turnDir
 local turnTime
 local wanderTime
 local atDestination
+local movingTo
+local gridUpdateFlag = false
 
 local flag = false
 
@@ -49,6 +51,12 @@ local State = {
 
 function TraverseAStar(dt)
 	if waypoints:Size() > 0 then
+
+		-- Has the grid changed should we try get the waypoints again?
+		if gridUpdateFlag then
+			waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, movingTo, true)
+			gridUpdateFlag = false
+		end
 
 		local direction = Vec3.new(waypoints[currentWaypoint], waypoints[currentWaypoint + 1], waypoints[currentWaypoint + 2]) - entity:GetTransformComponent().translation
 		local distance = math.sqrt(direction.x * direction.x + direction.z * direction.z)
@@ -179,7 +187,8 @@ local fsm = FSM.new({
 			atDestination = false
 			currentWaypoint = 1
 			moveRotateFlag = false
-			waypoints = grid:GetWaypoints(pos, Vec3.new(pos.x + wanderInX, 0.0, pos.z + wanderInZ), false)
+			movingTo = Vec3.new(pos.x + wanderInX, 0.0, pos.z + wanderInZ)
+			waypoints = grid:GetWaypoints(pos, movingTo, false)
 			print(entity:GetTagComponent().tag .. " is entering wander state")
 			entity:GetAnimationComponent():SetAnimation("NPC.gltf/walk")
 		end
@@ -223,10 +232,12 @@ local fsm = FSM.new({
 			atDestination = false
 			currentWaypoint = 1
 			if(atLocationA) then
-				waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, Vec3.new(543.5, 0.0, 41.5), true)
+				movingTo = Vec3.new(543.5, 0.0, 41.5)
+				waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, movingTo, true)
 				atLocationA = false
 			else
-				waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, Vec3.new(7.5, 0.0, 0.0), true)
+				movingTo = Vec3.new(7.5, 0.0, 0.0)
+				waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, movingTo, true)
 				atLocationA = true
 			end
 
@@ -242,7 +253,8 @@ local fsm = FSM.new({
 			if atDestination then
 				
 				if(flag == false) then
-					waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, bookHomePosition, true)
+					movingTo = bookHomePosition
+					waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, movingTo, true)
 					moveRotateFlag = false
 					atDestination = false
 					currentWaypoint = 1
@@ -290,7 +302,8 @@ local fsm = FSM.new({
 			currentWaypoint = 1
 			flag = false
 			holdingBook = false
-			waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, bookPosition, true)
+			movingTo = bookPosition
+			waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, movingTo, true)
 			entity:GetAnimationComponent():SetAnimation("NPC.gltf/walk")
 		end
 	),
@@ -361,7 +374,8 @@ local fsm = FSM.new({
 			atDestination = false
 			currentWaypoint = 1
 			flag = false
-			waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, bookHomePosition, true)
+			movingTo = bookHomePosition
+			waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, movingTo, true)
 			entity:GetAnimationComponent():SetAnimation("NPC.gltf/walk")
 		end
 	)},
@@ -382,6 +396,14 @@ function OnStart()
 			bookPosition = msg.payload.pos
 		end
 	)
+
+	messageAgent:RegisterMessageHandler(
+		MessageType.GRIDUPDATE,
+		function (msg)
+			gridUpdateFlag = true
+		end
+	)
+
 	fsm:Init()
 end
 

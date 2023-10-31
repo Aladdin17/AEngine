@@ -90,6 +90,8 @@ assets:
   - type: script
     path: assets/scripts/Button.lua
   - type: script
+    path: assets/scripts/Door.lua
+  - type: script
     path: assets/scripts/Teacher.lua
   - type: script
     path: assets/scripts/exit.lua
@@ -101,8 +103,6 @@ assets:
     path: assets/scripts/player.lua
   - type: script
     path: assets/scripts/projectile.lua
-  - type: script
-    path: assets/scripts/Door.lua
   - type: grid
     path: assets/grid/test.grid
 entities:
@@ -324,25 +324,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -373,25 +357,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -422,25 +390,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -471,25 +423,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -520,25 +456,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -569,25 +489,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -618,25 +522,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -667,25 +555,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -716,25 +588,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -765,25 +621,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -814,25 +654,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -863,25 +687,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [1.89999998, -1.29999995, -0.400000006]
+          offset: [1.89999998, -5.80000019, -0.400000006]
           orientation: [0, -0, 0]
-          halfExtents: [10.6999998, 0.800000012, 4]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [-7.94999981, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, 3.4000001]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
-        - type: Box
-          offset: [11.75, -6.5999999, -3.5999999]
-          orientation: [0, -0, 0]
-          halfExtents: [0.300000012, 4.4000001, 0.300000012]
+          halfExtents: [10.6999998, 5.0999999, 4]
         - type: Box
           offset: [-5.0999999, 1.79999995, 0.5]
           orientation: [-5.00928081e-06, -0, 5.00928081e-06]
@@ -1189,17 +997,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [0, 0.300000012, 0]
+          offset: [0, -3.69000006, 0]
           orientation: [0, -0, 0]
-          halfExtents: [5.9000001, 0.5, 13]
-        - type: Box
-          offset: [0, -4.0999999, 6.30000019]
-          orientation: [0, -0, 0]
-          halfExtents: [3, 4.5, 0.5]
-        - type: Box
-          offset: [0, -4.0999999, -6.30000019]
-          orientation: [0, -0, 0]
-          halfExtents: [3, 4.5, 0.5]
+          halfExtents: [5.9000001, 4.30000019, 13]
   - TagComponent:
       tag: Table2
     TransformComponent:
@@ -1218,17 +1018,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [0, 0.300000012, 0]
+          offset: [0, -3.69000006, 0]
           orientation: [0, -0, 0]
-          halfExtents: [5.9000001, 0.5, 13]
-        - type: Box
-          offset: [0, -4.0999999, 6.30000019]
-          orientation: [0, -0, 0]
-          halfExtents: [3, 4.5, 0.5]
-        - type: Box
-          offset: [0, -4.0999999, -6.30000019]
-          orientation: [0, -0, 0]
-          halfExtents: [3, 4.5, 0.5]
+          halfExtents: [5.9000001, 4.30000019, 13]
   - TagComponent:
       tag: Table3
     TransformComponent:
@@ -1247,17 +1039,9 @@ entities:
       linearDamping: 0
       colliders:
         - type: Box
-          offset: [0, 0.300000012, 0]
+          offset: [0, -3.69000006, 0]
           orientation: [0, -0, 0]
-          halfExtents: [5.9000001, 0.5, 13]
-        - type: Box
-          offset: [0, -4.0999999, 6.30000019]
-          orientation: [0, -0, 0]
-          halfExtents: [3, 4.5, 0.5]
-        - type: Box
-          offset: [0, -4.0999999, -6.30000019]
-          orientation: [0, -0, 0]
-          halfExtents: [3, 4.5, 0.5]
+          halfExtents: [5.9000001, 4.30000019, 13]
   - TagComponent:
       tag: TeachDesk
     TransformComponent:

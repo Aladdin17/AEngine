@@ -135,6 +135,8 @@ namespace AEngine
 			**/
 		static DebugCamera& GetDebugCamera();
 
+		void SetAdditionalDebugging(bool enable) { m_additionalRendering = enable; }
+
 //--------------------------------------------------------------------------------
 	private:
 		friend class Entity;
@@ -151,6 +153,8 @@ namespace AEngine
 		unsigned int m_refreshRate{ 60 };
 		float m_timeScale{ 1.0f };
 		TimeStep m_updateStep;
+
+		bool m_additionalRendering = false;
 
 		// simulation
 		State m_state{ State::Edit };

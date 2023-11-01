@@ -56,6 +56,9 @@ function TraverseAStar(dt)
 		if gridUpdateFlag then
 			waypoints = grid:GetWaypoints(entity:GetTransformComponent().translation, movingTo, true)
 			gridUpdateFlag = false
+			atDestination = false
+			currentWaypoint = 1
+			moveRotateFlag = false
 		end
 
 		local direction = Vec3.new(waypoints[currentWaypoint], waypoints[currentWaypoint + 1], waypoints[currentWaypoint + 2]) - entity:GetTransformComponent().translation
